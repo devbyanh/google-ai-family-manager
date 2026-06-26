@@ -195,7 +195,7 @@ const Dashboard = {
     ctx.clearRect(0, 0, w, h);
 
     // Grid lines
-    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.05)';
     ctx.lineWidth = 1;
     for (let i = 0; i <= 4; i++) {
       const y = padding.top + (chartH / 4) * i;
@@ -225,7 +225,7 @@ const Dashboard = {
 
       // Bar gradient
       const grad = ctx.createLinearGradient(x, y, x, padding.top + chartH);
-      grad.addColorStop(0, '#7c3aed');
+      grad.addColorStop(0, '#6366f1');
       grad.addColorStop(1, '#3b82f6');
 
       // Bar
@@ -242,24 +242,23 @@ const Dashboard = {
       ctx.fill();
 
       // Bar glow
-      ctx.shadowColor = 'rgba(124, 58, 237, 0.3)';
+      ctx.shadowColor = 'rgba(99, 102, 241, 0.2)';
       ctx.shadowBlur = 8;
       ctx.fill();
       ctx.shadowColor = 'transparent';
-      ctx.shadowBlur = 0;
+      // Value above bar
+      if (val > 0) {
+        ctx.fillStyle = '#1e293b';
+        ctx.font = '600 10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(Utils.formatCurrency(val), x, y - 8);
+      }
 
-      // X label
-      ctx.fillStyle = '#8b8ba3';
+      // X labels
+      ctx.fillStyle = '#64748b';
       ctx.font = '11px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(label, x, h - padding.bottom + 20);
-
-      // Value on top
-      if (val > 0) {
-        ctx.fillStyle = '#e8e8f0';
-        ctx.font = 'bold 10px Inter, sans-serif';
-        ctx.fillText(Utils.formatCurrency(val), x, y - 6);
-      }
     });
   },
 };

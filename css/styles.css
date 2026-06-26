@@ -7,23 +7,23 @@
 /* --- CSS Variables --- */
 :root {
   /* Colors */
-  --bg-primary: #0f0f1a;
-  --bg-secondary: #1a1a2e;
-  --bg-card: #16213e;
-  --bg-card-hover: #1a2744;
-  --bg-input: #0d1b3e;
-  --bg-modal-overlay: rgba(0, 0, 0, 0.7);
+  --bg-primary: #f4f7fb;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-input: #f1f5f9;
+  --bg-modal-overlay: rgba(15, 23, 42, 0.5);
   
-  --text-primary: #e8e8f0;
-  --text-secondary: #8b8ba3;
-  --text-muted: #5a5a72;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
   --text-white: #ffffff;
   
-  --accent-primary: #7c3aed;
-  --accent-primary-hover: #6d28d9;
+  --accent-primary: #6366f1;
+  --accent-primary-hover: #4f46e5;
   --accent-secondary: #3b82f6;
-  --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #6d28d9 0%, #2563eb 100%);
+  --accent-gradient: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
   
   --success: #10b981;
   --success-bg: rgba(16, 185, 129, 0.1);
@@ -31,17 +31,17 @@
   --warning-bg: rgba(245, 158, 11, 0.1);
   --danger: #ef4444;
   --danger-bg: rgba(239, 68, 68, 0.1);
-  --info: #06b6d4;
-  --info-bg: rgba(6, 182, 212, 0.1);
+  --info: #0ea5e9;
+  --info-bg: rgba(14, 165, 233, 0.1);
   
-  --border-color: rgba(124, 58, 237, 0.15);
-  --border-color-light: rgba(255, 255, 255, 0.06);
+  --border-color: rgba(148, 163, 184, 0.2);
+  --border-color-light: rgba(148, 163, 184, 0.1);
   
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.15);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
   
   /* Radius */
   --radius-sm: 6px;
@@ -91,8 +91,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-primary);
-  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -152,7 +152,7 @@ body {
 .sidebar-logo .logo-text .title {
   font-size: 15px;
   font-weight: 700;
-  color: var(--text-white);
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
@@ -245,8 +245,7 @@ body {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
-  background: rgba(15, 15, 26, 0.8);
-  backdrop-filter: blur(20px);
+  background: #ffffff;
   position: sticky;
   top: 0;
   z-index: 50;
@@ -271,10 +270,7 @@ body {
 .page-title {
   font-size: 20px;
   font-weight: 700;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
 }
 
 .top-bar-right {
@@ -397,12 +393,12 @@ body {
   font-size: 20px;
 }
 
-.stat-card .stat-icon.purple { background: rgba(124, 58, 237, 0.15); color: #a78bfa; }
-.stat-card .stat-icon.blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
-.stat-card .stat-icon.green { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-.stat-card .stat-icon.orange { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
-.stat-card .stat-icon.cyan { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
-.stat-card .stat-icon.pink { background: rgba(236, 72, 153, 0.15); color: #f472b6; }
+.stat-card .stat-icon.purple { background: rgba(99, 102, 241, 0.15); color: var(--accent-primary); }
+.stat-card .stat-icon.blue { background: rgba(59, 130, 246, 0.15); color: var(--accent-secondary); }
+.stat-card .stat-icon.green { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+.stat-card .stat-icon.orange { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+.stat-card .stat-icon.cyan { background: rgba(14, 165, 233, 0.15); color: var(--info); }
+.stat-card .stat-icon.pink { background: rgba(236, 72, 153, 0.15); color: #db2777; }
 
 .stat-card .stat-label {
   font-size: 12px;
@@ -415,7 +411,7 @@ body {
 .stat-card .stat-value {
   font-size: 28px;
   font-weight: 800;
-  color: var(--text-white);
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
@@ -449,7 +445,7 @@ body {
 .card-title {
   font-size: 15px;
   font-weight: 700;
-  color: var(--text-white);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -474,18 +470,15 @@ table {
 }
 
 table th {
-  padding: 12px 16px;
   text-align: left;
-  font-size: 11px;
-  font-weight: 600;
+  padding: 14px 16px;
   color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid var(--border-color);
+  letter-spacing: 0.5px;
+  background: var(--bg-input);
   white-space: nowrap;
-  position: sticky;
-  top: 0;
 }
 
 table td {
@@ -512,10 +505,9 @@ table tbody tr:last-child td {
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
   padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 11px;
+  border-radius: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -524,9 +516,9 @@ table tbody tr:last-child td {
 .badge-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
 .badge-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
 .badge-info { background: var(--info-bg); color: var(--info); border: 1px solid rgba(6, 182, 212, 0.2); }
-.badge-purple { background: rgba(124, 58, 237, 0.12); color: #a78bfa; border: 1px solid rgba(124, 58, 237, 0.2); }
-.badge-blue { background: rgba(59, 130, 246, 0.12); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
-.badge-pink { background: rgba(236, 72, 153, 0.12); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.2); }
+.badge-purple { background: rgba(99, 102, 241, 0.1); color: var(--accent-primary); border: 1px solid rgba(99, 102, 241, 0.2); }
+.badge-blue { background: rgba(59, 130, 246, 0.1); color: var(--accent-secondary); border: 1px solid rgba(59, 130, 246, 0.2); }
+.badge-pink { background: rgba(236, 72, 153, 0.1); color: #db2777; border: 1px solid rgba(236, 72, 153, 0.2); }
 
 /* --- Buttons --- */
 .btn {
@@ -784,7 +776,7 @@ textarea.form-control {
 .modal-title {
   font-size: 17px;
   font-weight: 700;
-  color: var(--text-white);
+  color: var(--text-primary);
 }
 
 .modal-close {
@@ -799,7 +791,7 @@ textarea.form-control {
 }
 
 .modal-close:hover {
-  color: var(--text-white);
+  color: var(--text-primary);
 }
 
 .modal-body {
@@ -845,7 +837,7 @@ textarea.form-control {
 .slot-progress {
   flex: 1;
   height: 8px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.06);
   border-radius: 4px;
   overflow: hidden;
   min-width: 80px;
@@ -923,7 +915,7 @@ textarea.form-control {
 .account-card-header .acc-info .acc-email {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-white);
+  color: var(--text-primary);
   word-break: break-all;
 }
 
@@ -946,7 +938,7 @@ textarea.form-control {
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.03);
   border-radius: var(--radius-sm);
   margin-bottom: 6px;
   font-size: 12px;
@@ -967,7 +959,7 @@ textarea.form-control {
   align-items: center;
   justify-content: center;
   padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
   border: 1px dashed var(--border-color);
   border-radius: var(--radius-sm);
   margin-bottom: 6px;
@@ -1052,7 +1044,7 @@ textarea.form-control {
 }
 
 .pagination-buttons button:hover:not(:disabled) {
-  background: rgba(124, 58, 237, 0.15);
+  background: rgba(99, 102, 241, 0.1);
   border-color: var(--accent-primary);
 }
 
@@ -1119,13 +1111,13 @@ textarea.form-control {
 .platform-count {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text-white);
+  color: var(--text-primary);
 }
 
 .platform-bar {
   width: 80px;
   height: 6px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.06);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -1210,11 +1202,8 @@ textarea.form-control {
 .settings-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-white);
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
 }
 
 .tag-list {
@@ -1282,11 +1271,12 @@ textarea.form-control {
 /* --- Import Section --- */
 .import-area {
   border: 2px dashed var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 40px;
+  border-radius: var(--radius-md);
+  padding: 32px 24px;
   text-align: center;
   cursor: pointer;
-  transition: all var(--transition-normal);
+  background: rgba(0, 0, 0, 0.02);
+  transition: all var(--transition-fast);
 }
 
 .import-area:hover {
