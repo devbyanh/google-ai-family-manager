@@ -287,7 +287,9 @@ function sendEmails(emails) {
     try {
       const mail = emails[i];
       if (mail.to && mail.subject && mail.body) {
-        GmailApp.sendEmail(mail.to, mail.subject, mail.body);
+        GmailApp.sendEmail(mail.to, mail.subject, mail.body, {
+          htmlBody: mail.htmlBody || mail.body
+        });
         successCount++;
       }
     } catch (e) {
