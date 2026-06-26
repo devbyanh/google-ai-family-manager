@@ -6,7 +6,7 @@ const Dashboard = {
   render() {
     const stats = DataManager.getStats();
     const orders = DataManager.getOrders();
-    const recentOrders = orders.slice(0, 8);
+    const recentOrders = [...orders].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)).slice(0, 8);
     const products = DataManager.getProducts();
 
     const platformColors = ['#7c3aed', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899'];
