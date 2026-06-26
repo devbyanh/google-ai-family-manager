@@ -9,7 +9,26 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="app-layout">
+  <!-- ====== LOGIN SCREEN ====== -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <div class="login-logo">🤖</div>
+      <h2>AI Family Manager</h2>
+      <p>Nhập khoá kết nối Database để truy cập hệ thống</p>
+      
+      <div class="form-group">
+        <input type="password" id="login-url-input" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
+      </div>
+      
+      <button id="login-submit-btn" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 600;" onclick="App.handleLogin()">
+        <span class="btn-text">🚀 Đăng nhập hệ thống</span>
+        <span class="btn-loader" style="display:none">⏳ Đang kết nối...</span>
+      </button>
+      <div id="login-error" class="login-error" style="display:none; color: #ef4444; margin-top: 10px; font-size: 13px;"></div>
+    </div>
+  </div>
+
+  <div class="app-layout" id="app-layout" style="display:none">
     <!-- ====== SIDEBAR ====== -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
@@ -46,6 +65,12 @@
           Cài đặt
         </button>
       </nav>
+
+      <div class="sidebar-footer" style="padding: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: auto;">
+        <button class="nav-item text-danger" onclick="App.handleLogout()" style="color: #ef4444; justify-content: center; width: 100%;">
+          <span class="nav-icon">🚪</span> Đăng xuất
+        </button>
+      </div>
     </aside>
 
     <!-- ====== MAIN CONTENT ====== -->

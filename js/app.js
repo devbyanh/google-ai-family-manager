@@ -10,9 +10,83 @@ const App = {
     DataManager.init();
     this._bindNavigation();
     this._bindGlobalEvents();
+    
+    // Check Authentication state
+    if (SheetsAPI.isConnected()) {
+      this._showApp();
+    } else {
+      this._showLogin();
+    }
+  },
+
+  _showApp() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-layout').style.display = 'flex';
     this._handleHash();
     this.updateBadges();
     this._initSheetSync();
+  },
+
+  _showLogin() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('app-layout').style.display = 'none';
+  },
+
+  async handleLogin() {
+    const urlInput = document.getElementById('login-url-input');
+    const btnText = document.querySelector('#login-submit-btn .btn-text');
+    const btnLoader = document.querySelector('#login-submit-btn .btn-loader');
+    const errorMsg = document.getElementById('login-error');
+    const url = urlInput.value.trim();
+
+    if (!url) {
+      errorMsg.textContent = 'Vui lòng nhập khoá kết nối!';
+      errorMsg.style.display = 'block';
+      this._shakeLogin();
+      return;
+    }
+
+    // UI Loading state
+    btnText.style.display = 'none';
+    btnLoader.style.display = 'inline-block';
+    errorMsg.style.display = 'none';
+    document.getElementById('login-submit-btn').disabled = true;
+
+    // Save temporarily to test
+    SheetsAPI.setUrl(url);
+
+    try {
+      await SheetsAPI.testConnection();
+      // Success
+      Utils.showToast('✅ Xác thực thành công!', 'success');
+      this._showApp();
+    } catch (err) {
+      SheetsAPI.setUrl(''); // Clear if failed
+      errorMsg.textContent = '❌ Lỗi kết nối: Khoá không hợp lệ hoặc Database lỗi.';
+      errorMsg.style.display = 'block';
+      this._shakeLogin();
+    } finally {
+      // Reset UI
+      btnText.style.display = 'inline-block';
+      btnLoader.style.display = 'none';
+      document.getElementById('login-submit-btn').disabled = false;
+    }
+  },
+
+  _shakeLogin() {
+    const card = document.querySelector('.login-card');
+    card.classList.remove('shake');
+    void card.offsetWidth; // trigger reflow
+    card.classList.add('shake');
+  },
+
+  handleLogout() {
+    if (confirm('Bạn có chắc chắn muốn ngắt kết nối và đăng xuất? (Sẽ cần nhập lại Khoá kết nối)')) {
+      SheetsAPI.setUrl(''); // Remove URL
+      Utils.showToast('Đã đăng xuất an toàn', 'info');
+      document.getElementById('login-url-input').value = '';
+      this._showLogin();
+    }
   },
 
   // --- Google Sheets auto-sync on startup ---
@@ -189,26 +263,18 @@ const App = {
       <!-- Google Sheets Connection -->
       <div class="card mb-4" style="border-color: rgba(59, 130, 246, 0.3)">
         <div class="card-header">
-          <div class="card-title">🔗 Kết nối Google Sheet (Database)</div>
+          <div class="card-title">🔗 Trạng thái Database</div>
           <span id="settings-sync-status" class="sync-indicator ${isConnected ? 'sync-success' : 'sync-idle'}">${isConnected ? '🟢 Đã kết nối' : '⏸ Chưa kết nối'}</span>
         </div>
         <div class="card-body">
-          <p class="text-muted mb-4" style="font-size:12px">Dán URL Web App từ Google Apps Script để lưu dữ liệu lên Google Sheet. Dữ liệu sẽ tự động đồng bộ mỗi khi bạn thêm/sửa/xoá.</p>
-          
-          <div class="form-group">
-            <label class="form-label">URL Google Apps Script Web App</label>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <input type="text" class="form-control" id="f-sheets-url" value="${Utils.escapeHtml(sheetsUrl)}" placeholder="https://script.google.com/macros/s/.../exec" style="flex:1;min-width:250px">
-              <div style="display:flex;gap:8px">
-                <button class="btn btn-primary" onclick="App.saveSheetUrl()">💾 Lưu</button>
-                <button class="btn btn-secondary" onclick="App.testSheetConnection()">🔌 Test</button>
-              </div>
-            </div>
-            <div class="form-hint">Xem file <strong>google-apps-script.js</strong> trong thư mục dự án để lấy hướng dẫn deploy</div>
-          </div>
-
           ${isConnected ? `
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+          <div style="padding: 16px; background: rgba(16, 185, 129, 0.08); border-radius: var(--radius-md); border: 1px solid rgba(16, 185, 129, 0.2); margin-bottom: 20px;">
+            <p style="font-size: 14px; color: #10b981; margin: 0; display: flex; align-items: center; gap: 8px;">
+              <span>✅</span>Hệ thống đang được kết nối an toàn tới Google Sheets Database.
+            </p>
+          </div>
+          <p class="text-muted mb-3" style="font-size:12px">Đồng bộ thủ công nếu cần thiết (Hệ thống vốn đã tự động đồng bộ khi bạn thêm/sửa/xoá dữ liệu):</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
             <button class="btn btn-success" onclick="App.pullFromSheet()" id="btn-pull">
               📥 Kéo dữ liệu từ Sheet
             </button>
@@ -219,10 +285,9 @@ const App = {
               🔄 Đồng bộ 2 chiều
             </button>
           </div>
-          <p class="text-muted mt-2" style="font-size:11px">💡 <strong>Kéo từ Sheet</strong>: Lấy dữ liệu mới nhất từ Google Sheet về app. <strong>Đẩy lên Sheet</strong>: Ghi đè dữ liệu trên Sheet bằng dữ liệu trong app.</p>
           ` : `
           <div style="margin-top:16px;padding:16px;background:rgba(245,158,11,0.08);border-radius:var(--radius-md);border:1px solid rgba(245,158,11,0.2)">
-            <p style="font-size:13px;color:#fbbf24;margin:0">⚠️ Chưa kết nối. Hãy dán URL Web App và nhấn <strong>Lưu</strong> → <strong>Test</strong> để kiểm tra kết nối.</p>
+            <p style="font-size:13px;color:#fbbf24;margin:0">⚠️ Bị ngắt kết nối. Vui lòng tải lại trang và Đăng nhập lại.</p>
           </div>
           `}
         </div>
