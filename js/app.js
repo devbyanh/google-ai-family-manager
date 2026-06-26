@@ -271,6 +271,7 @@ const App = {
                     <td><span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:${p.color};vertical-align:middle"></span></td>
                     <td>
                       <button class="btn-icon" title="Sửa" onclick="App.editProduct(${i})">✏️</button>
+                      <button class="btn-icon text-danger" title="Xoá" onclick="App.deleteProduct(${i})">🗑️</button>
                     </td>
                   </tr>
                 `).join('')}
@@ -377,6 +378,19 @@ const App = {
     DataManager.saveProducts(products);
     Utils.showToast('Đã cập nhật giá sản phẩm', 'success');
     this._renderSettings();
+  },
+
+  deleteProduct(index) {
+    const products = DataManager.getProducts();
+    const p = products[index];
+    if (!p) return;
+
+    if (confirm(`Bạn có chắc chắn muốn xoá sản phẩm "${p.name}"?`)) {
+      products.splice(index, 1);
+      DataManager.saveProducts(products);
+      Utils.showToast(`Đã xoá sản phẩm "${p.name}"`, 'success');
+      this._renderSettings();
+    }
   },
 
   addProductPrompt() {
