@@ -28,25 +28,6 @@
     </div>
   </div>
 
-  <!-- ====== LOCK SCREEN ====== -->
-  <div id="lock-screen" class="login-screen" style="display:none; z-index: 10000; flex-direction: column;">
-    <div class="login-logo" style="margin-bottom: 24px;">🔒</div>
-    <h2 style="color: var(--text-primary); margin-bottom: 8px;">Màn hình đã khoá</h2>
-    <p style="color: var(--text-muted); margin-bottom: 24px;">Vui lòng nhập mã PIN để tiếp tục</p>
-    
-    <div style="display: flex; gap: 12px; margin-bottom: 24px;" id="pin-dots">
-      <div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border-color); background: transparent;"></div>
-      <div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border-color); background: transparent;"></div>
-      <div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border-color); background: transparent;"></div>
-      <div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border-color); background: transparent;"></div>
-    </div>
-    
-    <!-- Hidden input to capture keystrokes on mobile -->
-    <input type="number" id="pin-input-hidden" style="position:absolute; opacity:0; pointer-events:none;" oninput="App.handlePinInput(event)">
-    <div id="pin-error" style="color: #ef4444; font-size: 13px; margin-top: -10px; margin-bottom: 10px; display: none;">Mã PIN không đúng</div>
-    <button class="btn btn-secondary" onclick="document.getElementById('pin-input-hidden').focus()">Nhập Mã PIN</button>
-  </div>
-
   <div class="app-layout" id="app-layout" style="display:none">
     <!-- ====== SIDEBAR ====== -->
     <aside class="sidebar" id="sidebar">
@@ -102,10 +83,9 @@
           <h1 class="page-title" id="page-title">📊 Tổng quan</h1>
         </div>
         <div class="top-bar-right">
-          <div class="search-box" id="cmd-search-trigger" onclick="App.openCommandMenu()" style="cursor: pointer; background: var(--bg-input); padding: 6px 12px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 8px; border: 1px solid var(--border-color);">
+          <div class="search-box">
             <span class="search-icon">🔍</span>
-            <span style="color: var(--text-muted); font-size: 13px;">Tìm kiếm...</span>
-            <kbd style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 4px; padding: 2px 6px; font-size: 11px; color: var(--text-muted);">Ctrl K</kbd>
+            <input type="text" placeholder="Tìm kiếm đơn hàng..." id="global-search">
           </div>
           <button id="theme-toggle" class="btn-icon" onclick="App.toggleTheme()" style="font-size: 18px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); cursor: pointer;" title="Chuyển chế độ Sáng/Tối">
             🌙
@@ -210,20 +190,6 @@
       <div class="modal-footer">
         <button class="btn btn-secondary btn-confirm-no">Huỷ</button>
         <button class="btn btn-danger btn-confirm-yes">Xác nhận xoá</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Command Menu (Ctrl + K) -->
-  <div class="modal-overlay" id="cmd-modal" style="align-items: flex-start; padding-top: 10vh;">
-    <div class="modal" style="max-width: 600px; padding: 0; background: var(--bg-card); overflow: hidden; border: 1px solid var(--border-color); box-shadow: var(--shadow-lg);">
-      <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 20px; opacity: 0.5;">🔍</span>
-        <input type="text" id="cmd-search-input" placeholder="Tìm đơn hàng, email... (Nhấn ESC để đóng)" style="width: 100%; border: none; background: transparent; font-size: 16px; outline: none; color: var(--text-primary);">
-      </div>
-      <div id="cmd-search-results" style="max-height: 400px; overflow-y: auto; padding: 8px;">
-        <!-- Results injected here -->
-        <div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">Gõ từ khoá để tìm kiếm siêu tốc</div>
       </div>
     </div>
   </div>

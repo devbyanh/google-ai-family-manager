@@ -26,121 +26,6 @@ const App = {
     } else {
       this._showLogin();
     }
-    
-    this.initPasscode();
-  },
-
-  pinBuffer: '',
-  inactivityTimer: null,
-  isLocked: false,
-
-  initPasscode() {
-    // Check if locked from previous session or load PIN
-    const savedPin = localStorage.getItem('app_pin');
-    
-    // Reset inactivity timer on any interaction
-    const resetTimer = () => {
-      if (this.isLocked || !savedPin || !SheetsAPI.isConnected()) return;
-      clearTimeout(this.inactivityTimer);
-      this.inactivityTimer = setTimeout(() => this.lockScreen(), 5 * 60 * 1000); // 5 minutes
-    };
-
-    ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => 
-      document.addEventListener(evt, resetTimer, true)
-    );
-    
-    // Also listen to physical keyboard for PIN entry when locked
-    document.addEventListener('keydown', (e) => {
-      if (!this.isLocked) return;
-      if (e.key >= '0' && e.key <= '9') {
-        this._addPinDigit(e.key);
-      } else if (e.key === 'Backspace') {
-        this._removePinDigit();
-      }
-    });
-
-    resetTimer();
-  },
-
-  lockScreen() {
-    if (!localStorage.getItem('app_pin') || !SheetsAPI.isConnected()) return;
-    this.isLocked = true;
-    document.getElementById('lock-screen').style.display = 'flex';
-    document.getElementById('app-layout').style.display = 'none';
-    this.pinBuffer = '';
-    this._updatePinUI();
-    document.getElementById('pin-error').style.display = 'none';
-    // Focus hidden input for mobile
-    setTimeout(() => document.getElementById('pin-input-hidden').focus(), 100);
-  },
-
-  handlePinInput(e) {
-    if (!this.isLocked) return;
-    const val = e.target.value;
-    if (val.length > this.pinBuffer.length) {
-      this._addPinDigit(val.slice(-1));
-    } else if (val.length < this.pinBuffer.length) {
-      this._removePinDigit();
-    }
-    e.target.value = this.pinBuffer;
-  },
-
-  _addPinDigit(digit) {
-    if (this.pinBuffer.length < 4) {
-      this.pinBuffer += digit;
-      this._updatePinUI();
-      if (this.pinBuffer.length === 4) {
-        this._checkPin();
-      }
-    }
-  },
-
-  _removePinDigit() {
-    if (this.pinBuffer.length > 0) {
-      this.pinBuffer = this.pinBuffer.slice(0, -1);
-      this._updatePinUI();
-      document.getElementById('pin-error').style.display = 'none';
-    }
-  },
-
-  _updatePinUI() {
-    const dots = document.getElementById('pin-dots').children;
-    for (let i = 0; i < 4; i++) {
-      if (i < this.pinBuffer.length) {
-        dots[i].style.background = 'var(--text-primary)';
-      } else {
-        dots[i].style.background = 'transparent';
-      }
-    }
-  },
-
-  _checkPin() {
-    const savedPin = localStorage.getItem('app_pin');
-    if (this.pinBuffer === savedPin) {
-      // Success
-      this.isLocked = false;
-      document.getElementById('lock-screen').style.display = 'none';
-      document.getElementById('app-layout').style.display = 'flex';
-      this.pinBuffer = '';
-      this._updatePinUI();
-      
-      // Reset timer
-      clearTimeout(this.inactivityTimer);
-      this.inactivityTimer = setTimeout(() => this.lockScreen(), 5 * 60 * 1000);
-    } else {
-      // Failed
-      document.getElementById('pin-error').style.display = 'block';
-      const screen = document.getElementById('lock-screen');
-      screen.classList.remove('shake');
-      void screen.offsetWidth; // trigger reflow
-      screen.classList.add('shake');
-      
-      setTimeout(() => {
-        this.pinBuffer = '';
-        this._updatePinUI();
-        document.getElementById('pin-input-hidden').value = '';
-      }, 500);
-    }
   },
 
   _showApp() {
@@ -354,127 +239,25 @@ const App = {
       }
     });
 
-    // Command Menu (Ctrl + K)
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        App.openCommandMenu();
-      }
-    });
-
-    const cmdInput = document.getElementById('cmd-search-input');
-    if (cmdInput) {
-      cmdInput.addEventListener('input', (e) => {
-        App.handleCommandSearch(e.target.value.trim());
-      });
-    }
-  },
-
-  openCommandMenu() {
-    const modal = document.getElementById('cmd-modal');
-    const input = document.getElementById('cmd-search-input');
-    modal.classList.add('active');
-    input.value = '';
-    this.handleCommandSearch('');
-    setTimeout(() => input.focus(), 100);
-  },
-
-  handleCommandSearch(query) {
-    const resultsContainer = document.getElementById('cmd-search-results');
-    if (!query) {
-      resultsContainer.innerHTML = '<div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">Gõ từ khoá để tìm kiếm siêu tốc (Tên, Email, Mã đơn...)</div>';
-      return;
-    }
-
-    const q = query.toLowerCase();
-    const orders = DataManager.getOrders();
-    const accounts = DataManager.getAccounts();
-    let resultsHtml = '';
-
-    // Search Orders
-    const matchedOrders = orders.filter(o => 
-      o.email.toLowerCase().includes(q) || 
-      o.madon.toLowerCase().includes(q) || 
-      (o.note && o.note.toLowerCase().includes(q))
-    ).slice(0, 5);
-
-    if (matchedOrders.length > 0) {
-      resultsHtml += '<div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin: 8px 8px 4px 8px;">Đơn hàng</div>';
-      matchedOrders.forEach(o => {
-        resultsHtml += `
-          <div onclick="App.jumpToOrder('${o._id}')" style="padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;" onmouseover="this.style.background='var(--bg-card-hover)'" onmouseout="this.style.background='transparent'">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <span style="font-size: 18px;">📄</span>
-              <div>
-                <div style="color: var(--text-primary); font-weight: 500;">${Utils.escapeHtml(o.email)}</div>
-                <div style="color: var(--text-muted); font-size: 12px;">${o.madon} • ${o.product}</div>
-              </div>
-            </div>
-            <span style="font-size: 12px; background: var(--bg-input); padding: 4px 8px; border-radius: 4px;">Đi tới ➡️</span>
-          </div>
-        `;
-      });
-    }
-
-    // Search Accounts
-    const matchedAccounts = accounts.filter(a => 
-      a.email.toLowerCase().includes(q) || 
-      (a.note && a.note.toLowerCase().includes(q))
-    ).slice(0, 3);
-
-    if (matchedAccounts.length > 0) {
-      resultsHtml += '<div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin: 16px 8px 4px 8px;">TK Quản lý</div>';
-      matchedAccounts.forEach(a => {
-        resultsHtml += `
-          <div onclick="App.jumpToAccount('${a._id}')" style="padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;" onmouseover="this.style.background='var(--bg-card-hover)'" onmouseout="this.style.background='transparent'">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <span style="font-size: 18px;">👤</span>
-              <div>
-                <div style="color: var(--text-primary); font-weight: 500;">${Utils.escapeHtml(a.email)}</div>
-                <div style="color: var(--text-muted); font-size: 12px;">Plan: ${a.plan || 'N/A'}</div>
-              </div>
-            </div>
-            <span style="font-size: 12px; background: var(--bg-input); padding: 4px 8px; border-radius: 4px;">Đi tới ➡️</span>
-          </div>
-        `;
-      });
-    }
-
-    if (!matchedOrders.length && !matchedAccounts.length) {
-      resultsHtml = '<div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">Không tìm thấy kết quả nào cho "' + Utils.escapeHtml(query) + '"</div>';
-    }
-
-    resultsContainer.innerHTML = resultsHtml;
-  },
-
-  jumpToOrder(id) {
-    document.getElementById('cmd-modal').classList.remove('active');
-    this.navigate('orders');
-    setTimeout(() => {
-      const orderSearch = document.getElementById('order-search');
-      if (orderSearch) {
-        const order = DataManager.getOrders().find(o => o._id === id);
-        if (order) {
-          orderSearch.value = order.email; // Use email to filter in orders page
-          orderSearch.dispatchEvent(new Event('input'));
+    // Global search
+    const globalSearch = document.getElementById('global-search');
+    if (globalSearch) {
+      globalSearch.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const q = globalSearch.value.trim();
+          if (q) {
+            this.navigate('orders');
+            setTimeout(() => {
+              const orderSearch = document.getElementById('order-search');
+              if (orderSearch) {
+                orderSearch.value = q;
+                orderSearch.dispatchEvent(new Event('input'));
+              }
+            }, 100);
+          }
         }
-      }
-    }, 100);
-  },
-
-  jumpToAccount(id) {
-    document.getElementById('cmd-modal').classList.remove('active');
-    this.navigate('accounts');
-    setTimeout(() => {
-      const accSearch = document.getElementById('acc-search');
-      if (accSearch) {
-        const acc = DataManager.getAccounts().find(a => a._id === id);
-        if (acc) {
-          accSearch.value = acc.email;
-          accSearch.dispatchEvent(new Event('input'));
-        }
-      }
-    }, 100);
+      });
+    }
   },
 
   updateBadges() {
@@ -559,30 +342,6 @@ const App = {
             <p style="font-size:13px;color:#fbbf24;margin:0">⚠️ Bị ngắt kết nối. Vui lòng tải lại trang và Đăng nhập lại.</p>
           </div>
           `}
-        </div>
-      </div>
-
-      <!-- Security Settings -->
-      <div class="card mb-4" style="border-color: rgba(245, 158, 11, 0.3)">
-        <div class="card-header">
-          <div class="card-title">🔒 Bảo mật & Riêng tư</div>
-        </div>
-        <div class="card-body">
-          <p class="text-muted mb-4" style="font-size:12px">Màn hình sẽ tự động khoá sau 5 phút không hoạt động để tránh bị nhìn trộm dữ liệu.</p>
-          
-          <div style="display:flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-            ${localStorage.getItem('app_pin') ? `
-              <div style="display: flex; align-items: center; gap: 8px; color: #10b981; font-weight: 500; font-size: 14px; background: rgba(16, 185, 129, 0.1); padding: 8px 16px; border-radius: var(--radius-sm);">
-                ✅ Đã cài đặt mã PIN
-              </div>
-              <button class="btn btn-danger" onclick="App.removePin()">Gỡ bỏ mã PIN</button>
-            ` : `
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <input type="password" id="f-new-pin" class="form-control" placeholder="Nhập 4 số PIN mới" maxlength="4" style="max-width: 150px; text-align: center; letter-spacing: 4px;">
-                <button class="btn btn-primary" onclick="App.savePin()">Thiết lập mã PIN</button>
-              </div>
-            `}
-          </div>
         </div>
       </div>
 
@@ -852,29 +611,6 @@ const App = {
         SheetsAPI.queueSync(() => SheetsAPI.syncSheet('Cài đặt', [{ key: 'emailTemplate', value: el.value }]));
       }
       Utils.showToast('Đã lưu mẫu Email', 'success');
-    }
-  },
-
-  // --- Security Settings ---
-  savePin() {
-    const input = document.getElementById('f-new-pin');
-    const val = input.value.trim();
-    if (val.length !== 4 || isNaN(val)) {
-      Utils.showToast('Vui lòng nhập đúng 4 số', 'error');
-      return;
-    }
-    localStorage.setItem('app_pin', val);
-    Utils.showToast('Đã thiết lập mã PIN bảo mật thành công!', 'success');
-    this._renderSettings();
-    this.initPasscode(); // Re-init timer
-  },
-
-  removePin() {
-    if (confirm('Bạn có chắc chắn muốn gỡ bỏ mã PIN bảo mật?')) {
-      localStorage.removeItem('app_pin');
-      Utils.showToast('Đã gỡ bỏ mã PIN', 'success');
-      this._renderSettings();
-      clearTimeout(this.inactivityTimer);
     }
   },
 

@@ -163,7 +163,7 @@ const Renewals = {
           <td>${statusBadge}</td>
           <td style="text-align: center;">
             <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px; background: rgba(59, 130, 246, 0.1); color: var(--accent-secondary); border-color: transparent;" onclick="Renewals.copyZaloMessage('${Utils.escapeHtml(o.email)}', '${Utils.escapeHtml(o.product)}', '${Utils.formatDateISO(o.expDate)}')">
-              💬 Gửi Zalo
+              📋 Copy Zalo Msg
             </button>
           </td>
         </tr>
