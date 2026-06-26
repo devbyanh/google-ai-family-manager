@@ -233,38 +233,44 @@ const Renewals = {
       let bodyHtmlContent = paragraphs.map(p => {
         let text = p.replace(/\n/g, '<br>');
         
-        // User's aggressive red highlighting style
-        text = text.replace(/Google AI Pro/gi, '<strong style="color: #e81c23;">Google AI Pro</strong>');
-        text = text.replace(new RegExp(data.product, 'gi'), `<strong style="color: #e81c23;">${data.product}</strong>`);
-        text = text.replace(/đã hết hạn sử dụng\./gi, '<strong style="color: #e81c23;">đã hết hạn sử dụng.</strong>');
-        text = text.replace(/cấm thay đổi nhóm gia đình trong vòng 12 tháng/gi, '<strong style="color: #e81c23; text-decoration: underline; font-style: italic;">cấm thay đổi nhóm gia đình trong vòng 12 tháng</strong>');
-        text = text.replace(/Zalo:/gi, '<strong style="color: #e81c23;">Zalo:</strong>');
-        text = text.replace(/Telegram:/gi, '<strong style="color: #e81c23;">Telegram:</strong>');
+        // Beautiful prominent highlighting
+        text = text.replace(/Google AI Pro/gi, '<span style="color: #ef4444; font-weight: 700;">Google AI Pro</span>');
+        text = text.replace(new RegExp(data.product, 'g'), `<span style="background: #fee2e2; color: #dc2626; border: 1px solid #f87171; border-radius: 4px; padding: 2px 8px; font-weight: bold; margin: 0 4px;">${data.product}</span>`);
+        text = text.replace(/đã hết hạn sử dụng\./gi, '<span style="color: #dc2626; font-weight: bold;">đã hết hạn sử dụng.</span>');
+        text = text.replace(/cấm thay đổi nhóm gia đình trong vòng 12 tháng/gi, '<span style="color: #dc2626; text-decoration: underline; font-style: italic; font-weight: bold;">cấm thay đổi nhóm gia đình trong vòng 12 tháng</span>');
+        
+        // Contact info highlighting
+        text = text.replace(/Zalo:/gi, '<span style="color: #0068ff; font-weight: bold;">Zalo:</span>');
+        text = text.replace(/Telegram:/gi, '<span style="color: #24a1de; font-weight: bold;">Telegram:</span>');
         
         return `<p style="margin: 0 0 16px 0;">${text}</p>`;
       }).join('');
       
       let htmlWrapper = `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f8; padding: 40px 20px; color: #222222;">
-        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; padding: 40px 20px; color: #1e293b;">
+        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);">
           
           <!-- Header -->
-          <div style="background-color: #ffffff; padding: 25px 30px; text-align: center; border-bottom: 3px solid #e81c23;">
-            <h2 style="color: #e81c23; margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Thông Báo Hết Hạn</h2>
+          <div style="background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); padding: 35px 30px; text-align: center; border-bottom: 4px solid #fde047;">
+            <div style="background: rgba(255,255,255,0.2); width: 60px; height: 60px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px; font-size: 30px; line-height: 60px;">
+              &#9888;&#65039;
+            </div>
+            <h2 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">THÔNG BÁO HẾT HẠN</h2>
           </div>
           
           <!-- Body -->
-          <div style="padding: 35px 35px 20px 35px;">
-            <div style="font-size: 16px; line-height: 1.6; color: #222222;">
+          <div style="padding: 40px 35px 20px 35px;">
+            <div style="font-size: 16px; line-height: 1.7; color: #334155;">
               ${bodyHtmlContent}
             </div>
           </div>
           
           <!-- Action Box -->
-          <div style="padding: 0 35px 40px 35px; text-align: center;">
-            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 0 0 25px 0;">
-            <p style="margin: 0 0 15px 0; font-size: 14px; color: #64748b;">Để đảm bảo dịch vụ không bị gián đoạn, quý khách vui lòng liên hệ Zalo:</p>
-            <a href="https://zalo.me/0559629469" style="display: inline-block; background-color: #0068ff; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 15px; transition: background-color 0.2s;">Liên Hệ Zalo Hỗ Trợ</a>
+          <div style="padding: 10px 35px 40px 35px; text-align: center;">
+            <div style="background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 25px;">
+              <p style="margin: 0 0 15px 0; font-size: 15px; color: #475569; font-weight: 600;">&#128071; Vui lòng liên hệ Zalo để gia hạn ngay &#128071;</p>
+              <a href="https://zalo.me/0559629469" style="display: inline-block; background: linear-gradient(to right, #0068ff, #005ce6); color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 16px; box-shadow: 0 8px 16px rgba(0, 104, 255, 0.25); transition: all 0.2s;">&#128172; Liên Hệ Zalo Hỗ Trợ</a>
+            </div>
           </div>
           
           <!-- Footer -->
