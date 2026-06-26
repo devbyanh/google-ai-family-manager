@@ -101,14 +101,14 @@ const Orders = {
 
     if (this.filters.sort === 'oldest') {
       orders.sort((a, b) => {
-        const da = Utils.parseVietnameseDate(a.date) || new Date(0);
-        const db = Utils.parseVietnameseDate(b.date) || new Date(0);
+        const da = Utils.parseVietnameseDate(a.orderDate) || new Date(0);
+        const db = Utils.parseVietnameseDate(b.orderDate) || new Date(0);
         return da - db;
       });
     } else {
       orders.sort((a, b) => {
-        const da = Utils.parseVietnameseDate(a.date) || new Date(0);
-        const db = Utils.parseVietnameseDate(b.date) || new Date(0);
+        const da = Utils.parseVietnameseDate(a.orderDate) || new Date(0);
+        const db = Utils.parseVietnameseDate(b.orderDate) || new Date(0);
         return db - da;
       });
     }
