@@ -228,46 +228,52 @@ const Renewals = {
       // Replace variables in template
       let bodyText = template.replace(/\[Ten_Goi\]/g, data.product);
       
-      // Convert plain text to HTML
-      let bodyHtmlContent = bodyText.replace(/\n/g, '<br>');
-      
-      // Auto-highlight important keywords
-      bodyHtmlContent = bodyHtmlContent.replace(/Google AI Pro/gi, '<strong style="color: #2563eb; font-size: 16px;">&#10024; Google AI Pro</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(/Gemini Pro/gi, '<strong style="color: #8b5cf6;">&#128640; Gemini Pro</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(/5TB/gi, '<strong style="color: #ec4899;">&#9729;&#65039; 5TB</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(/Antigravity/gi, '<strong style="color: #f97316;">&#9889; Antigravity</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(/Zalo:/gi, '<br><strong style="color: #0068ff; font-size: 16px;">&#128172; Zalo:</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(/Telegram:/gi, '<strong style="color: #24a1de; font-size: 16px;">&#9992;&#65039; Telegram:</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(new RegExp(data.product, 'g'), `<strong style="color: #ef4444; background: #fee2e2; padding: 3px 8px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">&#128142; ${data.product}</strong>`);
+      // Split text into paragraphs by double newlines, then replace single newlines with <br>
+      let paragraphs = bodyText.split(/\n\n+/);
+      let bodyHtmlContent = paragraphs.map(p => {
+        let text = p.replace(/\n/g, '<br>');
+        
+        // Corporate highlighting
+        text = text.replace(/Google AI Pro/gi, '<strong style="color: #0f172a;">Google AI Pro</strong>');
+        text = text.replace(/Gemini Pro/gi, '<strong style="color: #2563eb;">Gemini Pro</strong>');
+        text = text.replace(/5TB/gi, '<strong style="color: #2563eb;">5TB</strong>');
+        text = text.replace(/Antigravity/gi, '<strong style="color: #2563eb;">Antigravity</strong>');
+        text = text.replace(/Zalo:/gi, '<strong style="color: #0068ff;">Zalo:</strong>');
+        text = text.replace(/Telegram:/gi, '<strong style="color: #24a1de;">Telegram:</strong>');
+        text = text.replace(new RegExp(data.product, 'g'), `<span style="background: #f1f8ff; color: #0366d6; border: 1px solid #c8e1ff; border-radius: 4px; padding: 2px 6px; font-weight: bold;">${data.product}</span>`);
+        
+        return `<p style="margin: 0 0 16px 0;">${text}</p>`;
+      }).join('');
       
       let htmlWrapper = `
-      <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; background-color: #f3f4f6; padding: 40px 20px; color: #1f2937;">
-        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);">
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f8; padding: 40px 20px; color: #334155;">
+        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);">
+          
           <!-- Header -->
-          <div style="background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%); padding: 35px 20px; text-align: center; border-bottom: 4px solid #fcd34d;">
-            <div style="width: 70px; height: 70px; background: rgba(255,255,255,0.25); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-              <span style="font-size: 35px;">&#9888;&#65039;</span>
-            </div>
-            <h2 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); text-transform: uppercase;">Thông báo hết hạn</h2>
+          <div style="background-color: #0f172a; padding: 25px 30px; text-align: center; border-bottom: 3px solid #3b82f6;">
+            <h2 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">Thông Báo Dịch Vụ</h2>
           </div>
           
           <!-- Body -->
-          <div style="padding: 40px 35px;">
-            <div style="font-size: 16px; line-height: 1.8; color: #374151;">
+          <div style="padding: 35px 35px 20px 35px;">
+            <div style="font-size: 15px; line-height: 1.6; color: #334155;">
               ${bodyHtmlContent}
-            </div>
-            
-            <div style="margin-top: 40px; text-align: center; padding: 25px; background: #f8fafc; border-radius: 16px; border: 2px dashed #94a3b8;">
-              <p style="margin: 0 0 15px 0; font-weight: 600; color: #334155; font-size: 15px;">&#128071; Bấm vào nút bên dưới để gia hạn ngay &#128071;</p>
-              <a href="https://zalo.me/0559629469" style="display: inline-block; background: linear-gradient(to right, #0068ff, #005ce6); color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 16px; box-shadow: 0 8px 20px rgba(0, 104, 255, 0.3); transition: all 0.3s;">&#128172; Chat Zalo Hỗ Trợ</a>
             </div>
           </div>
           
-          <!-- Footer -->
-          <div style="background: #f1f5f9; padding: 25px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-            <p style="font-size: 14px; font-weight: 600; color: #475569; margin: 0 0 8px 0;">Cảm ơn Anh/Chị đã tin tưởng và sử dụng dịch vụ!</p>
-            <p style="font-size: 12px; color: #94a3b8; margin: 0; line-height: 1.5;">Đây là email tự động gửi từ hệ thống quản lý.<br>Quý khách vui lòng liên hệ trực tiếp qua Zalo/Telegram.</p>
+          <!-- Action Box -->
+          <div style="padding: 0 35px 40px 35px; text-align: center;">
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 0 0 25px 0;">
+            <p style="margin: 0 0 15px 0; font-size: 14px; color: #64748b;">Để đảm bảo dịch vụ không bị gián đoạn, quý khách vui lòng liên hệ Zalo:</p>
+            <a href="https://zalo.me/0559629469" style="display: inline-block; background-color: #0068ff; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 15px; transition: background-color 0.2s;">Liên Hệ Zalo Hỗ Trợ</a>
           </div>
+          
+          <!-- Footer -->
+          <div style="background-color: #f8fafc; padding: 20px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+            <p style="font-size: 13px; font-weight: 600; color: #475569; margin: 0 0 5px 0;">Trân trọng cảm ơn quý khách!</p>
+            <p style="font-size: 12px; color: #94a3b8; margin: 0; line-height: 1.5;">Đây là hệ thống gửi thư tự động.<br>Quý khách vui lòng phản hồi qua các kênh liên hệ chính thức.</p>
+          </div>
+          
         </div>
       </div>
       `;
