@@ -233,30 +233,29 @@ const Renewals = {
       let bodyHtmlContent = paragraphs.map(p => {
         let text = p.replace(/\n/g, '<br>');
         
-        // Corporate highlighting
-        text = text.replace(/Google AI Pro/gi, '<strong style="color: #0f172a;">Google AI Pro</strong>');
-        text = text.replace(/Gemini Pro/gi, '<strong style="color: #2563eb;">Gemini Pro</strong>');
-        text = text.replace(/5TB/gi, '<strong style="color: #2563eb;">5TB</strong>');
-        text = text.replace(/Antigravity/gi, '<strong style="color: #2563eb;">Antigravity</strong>');
-        text = text.replace(/Zalo:/gi, '<strong style="color: #0068ff;">Zalo:</strong>');
-        text = text.replace(/Telegram:/gi, '<strong style="color: #24a1de;">Telegram:</strong>');
-        text = text.replace(new RegExp(data.product, 'g'), `<span style="background: #f1f8ff; color: #0366d6; border: 1px solid #c8e1ff; border-radius: 4px; padding: 2px 6px; font-weight: bold;">${data.product}</span>`);
+        // User's aggressive red highlighting style
+        text = text.replace(/Google AI Pro/gi, '<strong style="color: #e81c23;">Google AI Pro</strong>');
+        text = text.replace(new RegExp(data.product, 'gi'), `<strong style="color: #e81c23;">${data.product}</strong>`);
+        text = text.replace(/đã hết hạn sử dụng\./gi, '<strong style="color: #e81c23;">đã hết hạn sử dụng.</strong>');
+        text = text.replace(/cấm thay đổi nhóm gia đình trong vòng 12 tháng/gi, '<strong style="color: #e81c23; text-decoration: underline; font-style: italic;">cấm thay đổi nhóm gia đình trong vòng 12 tháng</strong>');
+        text = text.replace(/Zalo:/gi, '<strong style="color: #e81c23;">Zalo:</strong>');
+        text = text.replace(/Telegram:/gi, '<strong style="color: #e81c23;">Telegram:</strong>');
         
         return `<p style="margin: 0 0 16px 0;">${text}</p>`;
       }).join('');
       
       let htmlWrapper = `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f8; padding: 40px 20px; color: #334155;">
-        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);">
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f8; padding: 40px 20px; color: #222222;">
+        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
           
           <!-- Header -->
-          <div style="background-color: #0f172a; padding: 25px 30px; text-align: center; border-bottom: 3px solid #3b82f6;">
-            <h2 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">Thông Báo Dịch Vụ</h2>
+          <div style="background-color: #ffffff; padding: 25px 30px; text-align: center; border-bottom: 3px solid #e81c23;">
+            <h2 style="color: #e81c23; margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Thông Báo Hết Hạn</h2>
           </div>
           
           <!-- Body -->
           <div style="padding: 35px 35px 20px 35px;">
-            <div style="font-size: 15px; line-height: 1.6; color: #334155;">
+            <div style="font-size: 16px; line-height: 1.6; color: #222222;">
               ${bodyHtmlContent}
             </div>
           </div>
