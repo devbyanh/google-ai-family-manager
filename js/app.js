@@ -26,6 +26,121 @@ const App = {
     } else {
       this._showLogin();
     }
+    
+    this.initPasscode();
+  },
+
+  pinBuffer: '',
+  inactivityTimer: null,
+  isLocked: false,
+
+  initPasscode() {
+    // Check if locked from previous session or load PIN
+    const savedPin = localStorage.getItem('app_pin');
+    
+    // Reset inactivity timer on any interaction
+    const resetTimer = () => {
+      if (this.isLocked || !savedPin || !SheetsAPI.isConnected()) return;
+      clearTimeout(this.inactivityTimer);
+      this.inactivityTimer = setTimeout(() => this.lockScreen(), 5 * 60 * 1000); // 5 minutes
+    };
+
+    ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => 
+      document.addEventListener(evt, resetTimer, true)
+    );
+    
+    // Also listen to physical keyboard for PIN entry when locked
+    document.addEventListener('keydown', (e) => {
+      if (!this.isLocked) return;
+      if (e.key >= '0' && e.key <= '9') {
+        this._addPinDigit(e.key);
+      } else if (e.key === 'Backspace') {
+        this._removePinDigit();
+      }
+    });
+
+    resetTimer();
+  },
+
+  lockScreen() {
+    if (!localStorage.getItem('app_pin') || !SheetsAPI.isConnected()) return;
+    this.isLocked = true;
+    document.getElementById('lock-screen').style.display = 'flex';
+    document.getElementById('app-layout').style.display = 'none';
+    this.pinBuffer = '';
+    this._updatePinUI();
+    document.getElementById('pin-error').style.display = 'none';
+    // Focus hidden input for mobile
+    setTimeout(() => document.getElementById('pin-input-hidden').focus(), 100);
+  },
+
+  handlePinInput(e) {
+    if (!this.isLocked) return;
+    const val = e.target.value;
+    if (val.length > this.pinBuffer.length) {
+      this._addPinDigit(val.slice(-1));
+    } else if (val.length < this.pinBuffer.length) {
+      this._removePinDigit();
+    }
+    e.target.value = this.pinBuffer;
+  },
+
+  _addPinDigit(digit) {
+    if (this.pinBuffer.length < 4) {
+      this.pinBuffer += digit;
+      this._updatePinUI();
+      if (this.pinBuffer.length === 4) {
+        this._checkPin();
+      }
+    }
+  },
+
+  _removePinDigit() {
+    if (this.pinBuffer.length > 0) {
+      this.pinBuffer = this.pinBuffer.slice(0, -1);
+      this._updatePinUI();
+      document.getElementById('pin-error').style.display = 'none';
+    }
+  },
+
+  _updatePinUI() {
+    const dots = document.getElementById('pin-dots').children;
+    for (let i = 0; i < 4; i++) {
+      if (i < this.pinBuffer.length) {
+        dots[i].style.background = 'var(--text-primary)';
+      } else {
+        dots[i].style.background = 'transparent';
+      }
+    }
+  },
+
+  _checkPin() {
+    const savedPin = localStorage.getItem('app_pin');
+    if (this.pinBuffer === savedPin) {
+      // Success
+      this.isLocked = false;
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('app-layout').style.display = 'flex';
+      this.pinBuffer = '';
+      this._updatePinUI();
+      
+      // Reset timer
+      clearTimeout(this.inactivityTimer);
+      this.inactivityTimer = setTimeout(() => this.lockScreen(), 5 * 60 * 1000);
+    } else {
+      // Failed
+      document.getElementById('pin-error').style.display = 'block';
+      const screen = document.getElementById('lock-screen');
+      screen.classList.remove('shake');
+      void screen.offsetWidth; // trigger reflow
+      screen.classList.add('shake');
+      
+      setTimeout(() => {
+        this.pinBuffer = '';
+        this._updatePinUI();
+        document.getElementById('pin-input-hidden').value = '';
+      }, 500);
+    }
   },
 
   _showApp() {
@@ -447,6 +562,30 @@ const App = {
         </div>
       </div>
 
+      <!-- Security Settings -->
+      <div class="card mb-4" style="border-color: rgba(245, 158, 11, 0.3)">
+        <div class="card-header">
+          <div class="card-title">🔒 Bảo mật & Riêng tư</div>
+        </div>
+        <div class="card-body">
+          <p class="text-muted mb-4" style="font-size:12px">Màn hình sẽ tự động khoá sau 5 phút không hoạt động để tránh bị nhìn trộm dữ liệu.</p>
+          
+          <div style="display:flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            ${localStorage.getItem('app_pin') ? `
+              <div style="display: flex; align-items: center; gap: 8px; color: #10b981; font-weight: 500; font-size: 14px; background: rgba(16, 185, 129, 0.1); padding: 8px 16px; border-radius: var(--radius-sm);">
+                ✅ Đã cài đặt mã PIN
+              </div>
+              <button class="btn btn-danger" onclick="App.removePin()">Gỡ bỏ mã PIN</button>
+            ` : `
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="password" id="f-new-pin" class="form-control" placeholder="Nhập 4 số PIN mới" maxlength="4" style="max-width: 150px; text-align: center; letter-spacing: 4px;">
+                <button class="btn btn-primary" onclick="App.savePin()">Thiết lập mã PIN</button>
+              </div>
+            `}
+          </div>
+        </div>
+      </div>
+
       <!-- Platform Management -->
       <div class="card mb-4">
         <div class="card-header">
@@ -713,6 +852,29 @@ const App = {
         SheetsAPI.queueSync(() => SheetsAPI.syncSheet('Cài đặt', [{ key: 'emailTemplate', value: el.value }]));
       }
       Utils.showToast('Đã lưu mẫu Email', 'success');
+    }
+  },
+
+  // --- Security Settings ---
+  savePin() {
+    const input = document.getElementById('f-new-pin');
+    const val = input.value.trim();
+    if (val.length !== 4 || isNaN(val)) {
+      Utils.showToast('Vui lòng nhập đúng 4 số', 'error');
+      return;
+    }
+    localStorage.setItem('app_pin', val);
+    Utils.showToast('Đã thiết lập mã PIN bảo mật thành công!', 'success');
+    this._renderSettings();
+    this.initPasscode(); // Re-init timer
+  },
+
+  removePin() {
+    if (confirm('Bạn có chắc chắn muốn gỡ bỏ mã PIN bảo mật?')) {
+      localStorage.removeItem('app_pin');
+      Utils.showToast('Đã gỡ bỏ mã PIN', 'success');
+      this._renderSettings();
+      clearTimeout(this.inactivityTimer);
     }
   },
 

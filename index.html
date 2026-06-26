@@ -28,6 +28,25 @@
     </div>
   </div>
 
+  <!-- ====== LOCK SCREEN ====== -->
+  <div id="lock-screen" class="login-screen" style="display:none; z-index: 10000; flex-direction: column;">
+    <div class="login-logo" style="margin-bottom: 24px;">🔒</div>
+    <h2 style="color: var(--text-primary); margin-bottom: 8px;">Màn hình đã khoá</h2>
+    <p style="color: var(--text-muted); margin-bottom: 24px;">Vui lòng nhập mã PIN để tiếp tục</p>
+    
+    <div style="display: flex; gap: 12px; margin-bottom: 24px;" id="pin-dots">
+      <div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border-color); background: transparent;"></div>
+      <div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border-color); background: transparent;"></div>
+      <div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border-color); background: transparent;"></div>
+      <div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border-color); background: transparent;"></div>
+    </div>
+    
+    <!-- Hidden input to capture keystrokes on mobile -->
+    <input type="number" id="pin-input-hidden" style="position:absolute; opacity:0; pointer-events:none;" oninput="App.handlePinInput(event)">
+    <div id="pin-error" style="color: #ef4444; font-size: 13px; margin-top: -10px; margin-bottom: 10px; display: none;">Mã PIN không đúng</div>
+    <button class="btn btn-secondary" onclick="document.getElementById('pin-input-hidden').focus()">Nhập Mã PIN</button>
+  </div>
+
   <div class="app-layout" id="app-layout" style="display:none">
     <!-- ====== SIDEBAR ====== -->
     <aside class="sidebar" id="sidebar">
