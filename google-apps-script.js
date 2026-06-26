@@ -19,7 +19,7 @@
 
 // --- Sheet column headers ---
 const HEADERS = {
-  'Đơn hàng': ['_id', 'madon', 'email', 'product', 'status', 'orderDate', 'price', 'platform', 'accId', 'accNumber', 'note', 'createdAt'],
+  'Đơn hàng': ['_id', 'madon', 'email', 'product', 'status', 'orderDate', 'price', 'platform', 'accId', 'accNumber', 'note', 'createdAt', 'history'],
   'Acc mẹ': ['_id', 'accNumber', 'email', 'plan', 'note', 'createdAt'],
   'Nền tảng': ['name'],
   'Sản phẩm': ['id', 'name', 'price', 'color', 'duration'],
@@ -186,7 +186,10 @@ function syncSheet(sheetName, dataArray) {
   // Write data rows
   const rows = dataArray.map(obj => {
     return headers.map(h => {
-      const val = obj[h];
+      let val = obj[h];
+      if (val !== undefined && val !== null && typeof val === 'object') {
+        val = JSON.stringify(val);
+      }
       return val !== undefined && val !== null ? val : '';
     });
   });
@@ -212,7 +215,10 @@ function addRow(sheetName, rowData) {
   }
 
   const row = headers.map(h => {
-    const val = rowData[h];
+    let val = rowData[h];
+    if (val !== undefined && val !== null && typeof val === 'object') {
+      val = JSON.stringify(val);
+    }
     return val !== undefined && val !== null ? val : '';
   });
 
@@ -235,7 +241,10 @@ function updateRow(sheetName, id, rowData) {
   for (let i = 1; i < data.length; i++) {
     if (String(data[i][idCol - 1]) === String(id)) {
       const row = headers.map(h => {
-        const val = rowData[h];
+        let val = rowData[h];
+        if (val !== undefined && val !== null && typeof val === 'object') {
+          val = JSON.stringify(val);
+        }
         return val !== undefined && val !== null ? val : '';
       });
       sheet.getRange(i + 1, 1, 1, headers.length).setValues([row]);

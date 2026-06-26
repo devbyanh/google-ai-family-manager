@@ -96,6 +96,12 @@ Trân trọng.`;
     order._id = Utils.generateId();
     order.madon = order.madon || Utils.generateOrderId();
     order.createdAt = new Date().toISOString();
+    order.history = order.history || [{
+      type: 'new',
+      date: new Date().toISOString(),
+      price: order.price,
+      product: order.product
+    }];
     orders.unshift(order);
     this.saveOrders(orders);
     this._recalcSlots();

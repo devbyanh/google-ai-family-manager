@@ -332,6 +332,31 @@ const Orders = {
         <label class="form-label">Ghi chú</label>
         <textarea class="form-control" id="f-note" rows="2" placeholder="Ghi chú...">${Utils.escapeHtml(order.note || '')}</textarea>
       </div>
+      
+      ${id ? `
+      <!-- RENEWAL & HISTORY SECTION -->
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px dashed var(--border-color);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <label class="form-label" style="margin: 0;">Lịch sử giao dịch & Gia hạn</label>
+          <button type="button" class="btn btn-primary" style="padding: 6px 12px; font-size: 13px;" onclick="Orders.renewOrder('${id}')">
+            ⚡ Gia hạn 1-Click
+          </button>
+        </div>
+        <div style="background: var(--bg-input); border-radius: var(--radius-md); padding: 12px; max-height: 150px; overflow-y: auto;">
+          ${(order.history && order.history.length > 0) ? order.history.map((h, i) => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: ${i === order.history.length - 1 ? 'none' : '1px solid var(--border-color-light)'};">
+              <div>
+                <div style="font-weight: 500; color: var(--text-primary); font-size: 13px;">${h.type === 'new' ? '🆕 Đăng ký mới' : '🔄 Gia hạn'}</div>
+                <div style="color: var(--text-muted); font-size: 11px;">${Utils.formatDateISO(h.date)} • ${Utils.escapeHtml(h.product || '')}</div>
+              </div>
+              <div style="font-weight: 600; color: var(--success); font-size: 13px;">
+                +${Utils.formatCurrency(h.price || 0)}
+              </div>
+            </div>
+          `).join('') : '<div style="color: var(--text-muted); font-size: 12px; text-align: center; padding: 8px;">Chưa có lịch sử giao dịch</div>'}
+        </div>
+      </div>
+      ` : ''}
     `;
 
     // Auto-fill price when product changes
@@ -414,5 +439,87 @@ const Orders = {
     ]);
     Utils.exportCSV(headers, rows, `donhang_${new Date().toISOString().slice(0, 10)}.csv`);
     Utils.showToast('Đã xuất file CSV', 'success');
+  },
+
+  async renewOrder(id) {
+    const order = DataManager.getOrders().find(o => o._id === id);
+    if (!order) {
+      Utils.showToast('Không tìm thấy đơn hàng', 'error');
+      return;
+    }
+
+    const products = DataManager.getProducts();
+    const product = products.find(p => p.name === order.product);
+    if (!product) {
+      Utils.showToast('Không tìm thấy thông tin sản phẩm này để gia hạn', 'error');
+      return;
+    }
+
+    const confirmed = await Utils.confirm(`Bạn có chắc chắn muốn gia hạn đơn hàng này thêm ${product.duration || 1} tháng?`);
+    if (!confirmed) return;
+
+    try {
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+
+      // Parse current order date
+      let currentOrderDate = Utils.parseVietnameseDate(order.orderDate);
+      if (!currentOrderDate || isNaN(currentOrderDate)) {
+        currentOrderDate = new Date();
+        currentOrderDate.setHours(0, 0, 0, 0);
+      }
+
+      // Calculate current expiration date
+      const durationMonths = product.duration || 1;
+      const currentExpDate = new Date(currentOrderDate);
+      currentExpDate.setMonth(currentExpDate.getMonth() + durationMonths);
+
+      let newStartDate;
+      if (currentExpDate > now) {
+        // If not yet expired, extend from the old expiration date
+        newStartDate = new Date(currentExpDate);
+      } else {
+        // If already expired, start from today
+        newStartDate = new Date(now);
+      }
+
+      const newPrice = (Number(order.price) || 0) + (Number(product.price) || 0);
+
+      const history = order.history || [];
+      // Initialize if empty
+      if (history.length === 0) {
+        history.push({
+          type: 'new',
+          date: Utils.formatDateISO(currentOrderDate),
+          price: Number(order.price) || 0,
+          product: order.product
+        });
+      }
+
+      // Add renewal transaction
+      history.push({
+        type: 'renew',
+        date: Utils.formatDateISO(new Date()),
+        price: Number(product.price) || 0,
+        product: product.name
+      });
+
+      const updatedData = {
+        orderDate: Utils.formatDateISO(newStartDate),
+        price: newPrice,
+        history: history
+      };
+
+      DataManager.updateOrder(id, updatedData);
+      Utils.showToast('Gia hạn đơn hàng thành công', 'success');
+
+      // Re-render modal to show updated history/price immediately, and refresh table
+      this.openModal(id);
+      this._renderTable();
+      App.updateBadges();
+    } catch (error) {
+      console.error(error);
+      Utils.showToast('Có lỗi xảy ra khi gia hạn', 'error');
+    }
   },
 };

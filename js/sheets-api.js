@@ -238,10 +238,21 @@ const SheetsAPI = {
 
       // Map sheet names to localStorage keys
       if (sheetData['Đơn hàng']) {
-        const orders = sheetData['Đơn hàng'].map(row => ({
-          ...row,
-          price: Number(row.price) || 0,
-        }));
+        const orders = sheetData['Đơn hàng'].map(row => {
+          let history = [];
+          if (row.history) {
+            try {
+              history = JSON.parse(row.history);
+            } catch (e) {
+              console.warn('Failed to parse history for order', row._id);
+            }
+          }
+          return {
+            ...row,
+            price: Number(row.price) || 0,
+            history: history,
+          };
+        });
         DataManager.saveOrders(orders);
       }
 
