@@ -17,6 +17,13 @@ const Utils = {
 
   formatDateISO(dateStr) {
     if (!dateStr) return '';
+    if (dateStr instanceof Date) {
+      const y = dateStr.getFullYear();
+      const m = String(dateStr.getMonth() + 1).padStart(2, '0');
+      const d = String(dateStr.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+    dateStr = String(dateStr);
     // Convert dd/mm/yyyy to yyyy-mm-dd
     if (dateStr.includes('/')) {
       const parts = dateStr.split('/');
