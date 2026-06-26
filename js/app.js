@@ -372,11 +372,21 @@ const App = {
     const p = products[index];
     if (!p) return;
 
-    const newPrice = prompt(`Nhập giá mới cho "${p.name}" (VNĐ):`, p.price);
-    if (newPrice === null) return;
-    products[index].price = Number(newPrice) || p.price;
+    const name = prompt('Sửa tên sản phẩm:', p.name);
+    if (!name || !name.trim()) return;
+
+    const price = prompt(`Sửa giá cho "${name.trim()}" (VNĐ):`, p.price);
+    if (price === null) return;
+
+    const duration = prompt(`Sửa thời hạn (tháng) cho "${name.trim()}":`, p.duration);
+    if (duration === null) return;
+
+    products[index].name = name.trim();
+    products[index].price = Number(price) || 0;
+    products[index].duration = Number(duration) || 1;
+
     DataManager.saveProducts(products);
-    Utils.showToast('Đã cập nhật giá sản phẩm', 'success');
+    Utils.showToast('Đã cập nhật thông tin sản phẩm', 'success');
     this._renderSettings();
   },
 
