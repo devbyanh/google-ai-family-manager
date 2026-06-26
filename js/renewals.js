@@ -196,7 +196,7 @@ const Renewals = {
     const btn = document.getElementById('btn-send-bulk');
     if (btn) {
       btn.disabled = this.selectedEmails.size === 0;
-      btn.textContent = \`✉️ Gửi Mail Hàng Loạt (\${this.selectedEmails.size})\`;
+      btn.textContent = `✉️ Gửi Mail Hàng Loạt (${this.selectedEmails.size})`;
     }
   },
 
@@ -207,7 +207,7 @@ const Renewals = {
       return;
     }
 
-    if (!confirm(\`Bạn có chắc chắn muốn gửi email nhắc gia hạn tới \${this.selectedEmails.size} khách hàng?\`)) {
+    if (!confirm(`Bạn có chắc chắn muốn gửi email nhắc gia hạn tới ${this.selectedEmails.size} khách hàng?`)) {
       return;
     }
 
@@ -217,11 +217,11 @@ const Renewals = {
     this.selectedEmails.forEach(jsonStr => {
       const data = JSON.parse(jsonStr);
       // Replace variables in template
-      let body = template.replace(/\\[Ten_Goi\\]/g, data.product);
+      let body = template.replace(/\[Ten_Goi\]/g, data.product);
       
       emailsPayload.push({
         to: data.email,
-        subject: \`Thông báo hết hạn gói \${data.product}\`,
+        subject: `Thông báo hết hạn gói ${data.product}`,
         body: body
       });
     });
@@ -234,10 +234,10 @@ const Renewals = {
     try {
       const res = await SheetsAPI.sendEmails(emailsPayload);
       if (res.success) {
-        Utils.showToast(\`Đã gửi thành công \${res.count} email!\`, 'success');
+        Utils.showToast(`Đã gửi thành công ${res.count} email!`, 'success');
         if (res.errors && res.errors.length > 0) {
           console.error('Email errors:', res.errors);
-          Utils.showToast(\`Có \${res.errors.length} email bị lỗi, xem console\`, 'warning');
+          Utils.showToast(`Có ${res.errors.length} email bị lỗi, xem console`, 'warning');
         }
         // Deselect all after success
         this.selectedEmails.clear();
