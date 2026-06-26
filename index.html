@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Quản lý bán gói Google AI Pro nhóm gia đình - Quản lý acc mẹ, đơn hàng, thành viên">
+  <title>Google AI Family Manager</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- ====== SIDEBAR ====== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="logo-icon">🤖</div>
+          <div class="logo-text">
+            <span class="title">AI Family Manager</span>
+            <span class="subtitle">Google AI Pro</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-page="dashboard">
+          <span class="nav-icon">📊</span>
+          Tổng quan
+        </button>
+        <button class="nav-item" data-page="orders">
+          <span class="nav-icon">📋</span>
+          Đơn hàng
+          <span class="nav-badge" id="badge-orders" style="display:none">0</span>
+        </button>
+        <button class="nav-item" data-page="accounts">
+          <span class="nav-icon">👤</span>
+          Acc mẹ
+          <span class="nav-badge" id="badge-accounts" style="display:none;background:#10b981">0</span>
+        </button>
+        <button class="nav-item" data-page="settings">
+          <span class="nav-icon">⚙️</span>
+          Cài đặt
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="nav-item" id="btn-backup">
+          <span class="nav-icon">💾</span>
+          Sao lưu dữ liệu
+        </button>
+        <button class="nav-item" id="btn-restore">
+          <span class="nav-icon">📥</span>
+          Khôi phục
+        </button>
+        <input type="file" id="restore-file-input" accept=".json" style="display:none">
+      </div>
+    </aside>
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <button class="menu-toggle" id="menu-toggle">☰</button>
+          <h1 class="page-title" id="page-title">📊 Tổng quan</h1>
+        </div>
+        <div class="top-bar-right">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Tìm kiếm đơn hàng..." id="global-search">
+          </div>
+          <span class="sync-indicator sync-idle" id="sync-status">⏸ Chưa kết nối</span>
+        </div>
+      </header>
+
+      <!-- Page Container -->
+      <div class="page-container">
+        <!-- Dashboard -->
+        <section class="page-section active" id="page-dashboard"></section>
+
+        <!-- Orders -->
+        <section class="page-section" id="page-orders"></section>
+
+        <!-- Accounts -->
+        <section class="page-section" id="page-accounts"></section>
+
+        <!-- Settings -->
+        <section class="page-section" id="page-settings"></section>
+      </div>
+    </main>
+  </div>
+
+  <!-- ====== MODALS ====== -->
+
+  <!-- Order Modal -->
+  <div class="modal-overlay" id="order-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="order-modal-title">Thêm đơn hàng mới</h2>
+        <button class="modal-close" onclick="Orders.closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="order-form" onsubmit="event.preventDefault()"></form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="Orders.closeModal()">Huỷ</button>
+        <button class="btn btn-primary" onclick="Orders.saveOrder()">💾 Lưu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Modal -->
+  <div class="modal-overlay" id="account-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="account-modal-title">Thêm acc mẹ mới</h2>
+        <button class="modal-close" onclick="Accounts.closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="account-form" onsubmit="event.preventDefault()"></form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="Accounts.closeModal()">Huỷ</button>
+        <button class="btn btn-primary" onclick="Accounts.saveAccount()">💾 Lưu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Dialog -->
+  <div class="modal-overlay confirm-dialog" id="confirm-dialog">
+    <div class="modal">
+      <div class="modal-body">
+        <div class="confirm-icon">⚠️</div>
+        <div class="confirm-message">Bạn có chắc chắn?</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-confirm-no">Huỷ</button>
+        <button class="btn btn-danger btn-confirm-yes">Xác nhận xoá</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/sheets-api.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/orders.js"></script>
+  <script src="js/accounts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
