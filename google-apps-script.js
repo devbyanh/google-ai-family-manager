@@ -64,6 +64,9 @@ function doPost(e) {
       case 'deleteRow':
         return jsonResponse(deleteRow(body.sheet, body.id));
 
+      case 'sendEmails':
+        return jsonResponse(sendEmails(body.emails));
+
       case 'syncSheet':
         return jsonResponse(syncSheet(body.sheet, body.data));
 
@@ -269,6 +272,30 @@ function jsonResponse(data) {
   return ContentService
     .createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ========== EMAIL SERVICE ==========
+function sendEmails(emails) {
+  if (!emails || !Array.isArray(emails)) {
+    return { error: 'Invalid emails array' };
+  }
+
+  let successCount = 0;
+  let errors = [];
+
+  for (let i = 0; i < emails.length; i++) {
+    try {
+      const mail = emails[i];
+      if (mail.to && mail.subject && mail.body) {
+        GmailApp.sendEmail(mail.to, mail.subject, mail.body);
+        successCount++;
+      }
+    } catch (e) {
+      errors.push(`Error sending to ${emails[i]?.to}: ${e.message}`);
+    }
+  }
+
+  return { success: true, count: successCount, errors: errors };
 }
 
 // ========== SETUP (Run once) ==========

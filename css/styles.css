@@ -489,6 +489,13 @@ table td {
   vertical-align: middle;
 }
 
+.table-container input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent-primary);
+}
+
 table tbody tr {
   transition: background var(--transition-fast);
 }

@@ -8,6 +8,7 @@ const DataManager = {
     ACCOUNTS: 'gaf_accounts',
     PLATFORMS: 'gaf_platforms',
     PRODUCTS: 'gaf_products',
+    EMAIL_TEMPLATE: 'gaf_email_template',
   },
 
   // --- Default Data ---
@@ -25,6 +26,24 @@ const DataManager = {
     ];
   },
 
+  getDefaultEmailTemplate() {
+    return `Shop xin thông báo rằng gói Google AI Pro [Ten_Goi] của Anh/Chị đã hết hạn sử dụng.
+Để tránh việc bị cấm thay đổi nhóm gia đình trong vòng 12 tháng và gián đoạn quá trình học tập, làm việc hoặc sử dụng các tính năng AI nâng cao (Gemini Pro, 5TB lưu trữ, Antigravity…), Anh/Chị vui lòng liên hệ lại với shop nếu có nhu cầu gia hạn ạ.
+
+Thông tin liên hệ hỗ trợ gia hạn:
+
+Zalo: 0559629469
+Telegram: @tuawn_anh
+
+Shop sẽ hỗ trợ kiểm tra và gia hạn nhanh chóng trong thời gian sớm nhất.
+
+Cảm ơn Anh/Chị đã tin tưởng và sử dụng dịch vụ.
+
+Rất mong được tiếp tục đồng hành cùng Anh/Chị trong thời gian tới.
+
+Trân trọng.`;
+  },
+
   // --- Init ---
   init() {
     if (!localStorage.getItem(this.KEYS.PLATFORMS)) {
@@ -38,6 +57,9 @@ const DataManager = {
     }
     if (!localStorage.getItem(this.KEYS.ACCOUNTS)) {
       localStorage.setItem(this.KEYS.ACCOUNTS, JSON.stringify([]));
+    }
+    if (!localStorage.getItem(this.KEYS.EMAIL_TEMPLATE)) {
+      localStorage.setItem(this.KEYS.EMAIL_TEMPLATE, this.getDefaultEmailTemplate());
     }
   },
 
@@ -199,6 +221,17 @@ const DataManager = {
     localStorage.setItem(this.KEYS.PRODUCTS, JSON.stringify(products));
     // Sync to Google Sheet
     SheetsAPI.queueSync(() => SheetsAPI.syncSheet('Sản phẩm', products));
+  },
+
+  // ==========================================
+  // EMAIL TEMPLATE
+  // ==========================================
+  getEmailTemplate() {
+    return localStorage.getItem(this.KEYS.EMAIL_TEMPLATE) || this.getDefaultEmailTemplate();
+  },
+
+  saveEmailTemplate(template) {
+    localStorage.setItem(this.KEYS.EMAIL_TEMPLATE, template);
   },
 
   getProductById(id) {

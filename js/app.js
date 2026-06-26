@@ -53,6 +53,7 @@ const App = {
       dashboard: '📊 Tổng quan',
       orders: '📋 Quản lý đơn hàng',
       accounts: '👤 Quản lý Acc mẹ',
+      renewals: '⏳ Quản lý gia hạn',
       settings: '⚙️ Cài đặt',
     };
     document.getElementById('page-title').textContent = titles[page] || '';
@@ -74,6 +75,9 @@ const App = {
         break;
       case 'accounts':
         Accounts.render();
+        break;
+      case 'renewals':
+        Renewals.render();
         break;
       case 'settings':
         this._renderSettings();
@@ -279,6 +283,22 @@ const App = {
         </div>
       </div>
 
+      <!-- Email Template -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <div class="card-title">✉️ Mẫu Email nhắc gia hạn</div>
+        </div>
+        <div class="card-body">
+          <p class="text-muted mb-4" style="font-size:12px">Tuỳ chỉnh mẫu Email để gửi thông báo nhắc gia hạn. Sử dụng biến <code>[Ten_Goi]</code> để hệ thống tự động điền "1 Tháng", "6 Tháng"...</p>
+          <div class="form-group">
+            <textarea class="form-control" id="settings-email-template" rows="12" style="font-family: monospace; font-size: 13px;">${Utils.escapeHtml(DataManager.getEmailTemplate())}</textarea>
+          </div>
+          <div class="mt-2">
+            <button class="btn btn-primary" onclick="App.saveEmailTemplate()">💾 Lưu mẫu Email</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Import/Export -->
       <div class="card mb-4">
         <div class="card-header">
@@ -382,6 +402,14 @@ const App = {
     DataManager.saveProducts(products);
     Utils.showToast(`Đã thêm sản phẩm "${name}"`, 'success');
     this._renderSettings();
+  },
+  // --- Email Template ---
+  saveEmailTemplate() {
+    const el = document.getElementById('settings-email-template');
+    if (el) {
+      DataManager.saveEmailTemplate(el.value);
+      Utils.showToast('Đã lưu mẫu Email', 'success');
+    }
   },
 
   // --- Import CSV ---

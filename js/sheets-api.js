@@ -116,6 +116,15 @@ const SheetsAPI = {
     return result;
   },
 
+  async sendEmails(emails) {
+    const result = await this._post({
+      action: 'sendEmails',
+      emails: emails,
+    });
+    if (result.error) throw new Error(result.error);
+    return result;
+  },
+
   // ==========================================
   // SYNC MANAGER
   // ==========================================
