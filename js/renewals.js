@@ -230,113 +230,109 @@ const Renewals = {
       let bodyText = template.replace(/\[Ten_Goi\]/g, data.product);
       
       let htmlWrapper = `
-      <!-- Container -->
-      <div style="font-family: 'Segoe UI', Inter, Arial, sans-serif; background-color: #F8FAFC; padding: 40px 16px; color: #1E293B; line-height: 1.8; font-size: 15px; -webkit-font-smoothing: antialiased;">
-        <!-- Main Card -->
-        <div style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 16px; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025); overflow: hidden; border: 1px solid #E2E8F0;">
-          
-          <!-- ======================== -->
-          <!-- HEADER -->
-          <!-- ======================== -->
-          <div style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); text-align: center; padding: 48px 24px;">
-            <div style="background: linear-gradient(135deg, #2563EB 0%, #0EA5E9 100%); width: 72px; height: 72px; border-radius: 20px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2); transform: rotate(-5deg);">
-              <span style="font-size: 32px; transform: rotate(5deg); display: block;">&#9888;&#65039;</span>
-            </div>
-            <h1 style="margin: 0 0 12px 0; font-size: 28px; color: #FFFFFF; font-weight: 700; letter-spacing: -0.5px;">THÔNG BÁO GIA HẠN DỊCH VỤ</h1>
-            <p style="margin: 0; font-size: 16px; color: #94A3B8; font-weight: 500;">Google AI Pro</p>
-          </div>
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #FFFFFF; color: #111827; font-size: 15px; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px 16px; -webkit-font-smoothing: antialiased;">
+        
+        <!-- HEADER -->
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 32px;">
+          <tr>
+            <td align="center">
+              <div style="font-size: 40px; margin-bottom: 16px;">&#129302;</div>
+              <h1 style="margin: 0 0 8px 0; font-size: 24px; color: #111827; font-weight: 700; letter-spacing: -0.5px;">Thông báo gia hạn dịch vụ</h1>
+              <p style="margin: 0; font-size: 16px; color: #6B7280; font-weight: 500;">Google AI Pro</p>
+            </td>
+          </tr>
+        </table>
 
-          <!-- ======================== -->
-          <!-- BODY -->
-          <!-- ======================== -->
-          <div style="padding: 40px;">
-            
-            <!-- Section 1: Greeting -->
-            <p style="margin-top: 0; margin-bottom: 32px; font-size: 16px;">Xin chào Anh/Chị,</p>
-            
-            <!-- Section 2: Order Info Card -->
-            <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 24px; margin-bottom: 32px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-              
-              <!-- Package -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
-                <tr>
-                  <td width="36" style="vertical-align: top;"><div style="background: #F1F5F9; width: 28px; height: 28px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;">&#128230;</div></td>
-                  <td>
-                    <p style="margin: 0; font-size: 13px; color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Gói dịch vụ</p>
-                    <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: 700; color: #1E293B;">Google AI Pro ${data.product}</p>
-                  </td>
-                </tr>
-              </table>
-              
-              <!-- Status -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
-                <tr>
-                  <td width="36" style="vertical-align: top;"><div style="background: #F1F5F9; width: 28px; height: 28px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;">&#128197;</div></td>
-                  <td>
-                    <p style="margin: 0; font-size: 13px; color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Trạng thái</p>
-                    <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: 700; color: #DC2626;">Đã hết hạn</p>
-                  </td>
-                </tr>
-              </table>
-              
-              <!-- Warning Alert -->
-              <div style="background-color: #FEF2F2; border: 1px solid #FCA5A5; padding: 16px; border-radius: 8px;">
-                <p style="margin: 0; font-size: 14px; color: #991B1B; line-height: 1.6;"><span style="font-weight: 700; color: #DC2626;">&#9888;&#65039; Lưu ý:</span> Nếu thay đổi nhóm gia đình sẽ bị cấm tham gia lại trong vòng 12 tháng.</p>
-              </div>
-            </div>
+        <hr style="border: 0; border-top: 1px solid #E5E7EB; margin: 0 0 24px 0;">
 
-            <!-- Section 3: Value Proposition -->
-            <div style="background-color: #FEF3C7; border: 1px solid #FDE68A; border-radius: 12px; padding: 28px; margin-bottom: 32px;">
-              <h3 style="margin: 0 0 20px 0; font-size: 16px; color: #92400E; font-weight: 700;">&#128161; Vì sao nên gia hạn?</h3>
-              <ul style="margin: 0; padding-left: 20px; color: #92400E; font-size: 15px; line-height: 2;">
-                <li>Không bị gián đoạn dịch vụ</li>
-                <li>Tiếp tục dùng <strong>Gemini Pro</strong></li>
-                <li><strong>NotebookLM</strong></li>
-                <li><strong>Veo</strong></li>
-                <li><strong>Antigravity</strong></li>
-                <li><strong>Google AI Pro</strong></li>
-                <li><strong>5TB Cloud</strong></li>
-              </ul>
-            </div>
+        <!-- GREETING -->
+        <p style="margin: 0 0 24px 0; font-size: 15px;">Xin chào Anh/Chị,</p>
 
-            <!-- Section 4: Contact Info -->
-            <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 24px; margin-bottom: 40px;">
-              <h3 style="margin: 0 0 20px 0; font-size: 13px; color: #64748B; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Thông tin liên hệ</h3>
-              
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 16px;">
-                <tr>
-                  <td width="40" style="vertical-align: middle;"><div style="background: #DBEAFE; width: 32px; height: 32px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 16px;">&#128172;</div></td>
-                  <td style="font-size: 16px;"><strong style="color: #2563EB;">Zalo:</strong> <a href="https://zalo.me/0559629469" style="color: #1E293B; text-decoration: none; font-weight: 500;">0559629469</a></td>
-                </tr>
-              </table>
-              
-              <table width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td width="40" style="vertical-align: middle;"><div style="background: #E0F2FE; width: 32px; height: 32px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 16px;">&#9992;&#65039;</div></td>
-                  <td style="font-size: 16px;"><strong style="color: #0EA5E9;">Telegram:</strong> <a href="https://t.me/tuawn_anh" style="color: #1E293B; text-decoration: none; font-weight: 500;">@tuawn_anh</a></td>
-                </tr>
-              </table>
-            </div>
+        <!-- PACKAGE CARD -->
+        <table width="100%" border="0" cellpadding="20" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 12px; margin-bottom: 16px;">
+          <tr>
+            <td>
+              <p style="margin: 0 0 8px 0; font-size: 13px; color: #6B7280; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">&#128230; GÓI DỊCH VỤ</p>
+              <p style="margin: 0; font-size: 16px; font-weight: 700; color: #111827;">Google AI Pro ${data.product}</p>
+            </td>
+          </tr>
+        </table>
 
-            <!-- ======================== -->
-            <!-- CTA BUTTON -->
-            <!-- ======================== -->
-            <div style="text-align: center;">
-              <a href="https://zalo.me/0559629469" style="display: inline-block; background: linear-gradient(135deg, #2563EB 0%, #0EA5E9 100%); color: #FFFFFF; text-decoration: none; padding: 16px 48px; font-size: 16px; font-weight: 700; border-radius: 100px; box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4); text-transform: uppercase; letter-spacing: 1px;">Gia Hạn Ngay</a>
-            </div>
-            
-          </div>
+        <!-- STATUS CARD -->
+        <table width="100%" border="0" cellpadding="20" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 12px; margin-bottom: 24px;">
+          <tr>
+            <td>
+              <p style="margin: 0 0 8px 0; font-size: 13px; color: #6B7280; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">&#9200; TRẠNG THÁI</p>
+              <p style="margin: 0; font-size: 16px; font-weight: 700; color: #DC2626;">Đã hết hạn</p>
+            </td>
+          </tr>
+        </table>
 
-          <!-- ======================== -->
-          <!-- FOOTER -->
-          <!-- ======================== -->
-          <div style="background-color: #F8FAFC; padding: 32px 40px; text-align: center; border-top: 1px solid #E2E8F0;">
-            <div style="font-size: 28px; margin-bottom: 16px; opacity: 0.8;">&#129302;</div>
-            <p style="margin: 0 0 8px 0; font-size: 13px; color: #64748B; font-weight: 500;">Đây là email gửi tự động.</p>
-            <p style="margin: 0; font-size: 13px; color: #64748B;">Nếu cần hỗ trợ vui lòng liên hệ Zalo.</p>
-          </div>
-          
-        </div>
+        <!-- WARNING -->
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 32px;">
+          <tr>
+            <td style="border-left: 4px solid #F59E0B; padding-left: 16px;">
+              <p style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: #111827;">&#9888;&#65039; Lưu ý</p>
+              <p style="margin: 0; font-size: 15px; color: #6B7280; line-height: 1.6;">Nếu thay đổi nhóm gia đình sẽ bị cấm tham gia lại 12 tháng.</p>
+            </td>
+          </tr>
+        </table>
+
+        <hr style="border: 0; border-top: 1px solid #E5E7EB; margin: 0 0 24px 0;">
+
+        <!-- FEATURES -->
+        <p style="margin: 0 0 16px 0; font-size: 15px; font-weight: 700;">&#10024; Quyền lợi khi gia hạn</p>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 32px;">
+          <tr><td style="padding-bottom: 12px; color: #111827; font-size: 15px;">&#10004;&#65039; &nbsp;<strong>Gemini Pro</strong></td></tr>
+          <tr><td style="padding-bottom: 12px; color: #111827; font-size: 15px;">&#10004;&#65039; &nbsp;<strong>NotebookLM</strong></td></tr>
+          <tr><td style="padding-bottom: 12px; color: #111827; font-size: 15px;">&#10004;&#65039; &nbsp;<strong>Veo</strong></td></tr>
+          <tr><td style="padding-bottom: 12px; color: #111827; font-size: 15px;">&#10004;&#65039; &nbsp;<strong>Antigravity</strong></td></tr>
+          <tr><td style="padding-bottom: 0; color: #111827; font-size: 15px;">&#10004;&#65039; &nbsp;<strong>5TB Storage</strong></td></tr>
+        </table>
+
+        <hr style="border: 0; border-top: 1px solid #E5E7EB; margin: 0 0 24px 0;">
+
+        <!-- SUPPORT -->
+        <p style="margin: 0 0 16px 0; font-size: 15px; font-weight: 700;">&#128222; Hỗ trợ</p>
+        <table width="100%" border="0" cellpadding="20" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 12px; margin-bottom: 12px;">
+          <tr>
+            <td>
+              <p style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: #2563EB;">&#128172; Zalo</p>
+              <p style="margin: 0; font-size: 15px;"><a href="https://zalo.me/0559629469" style="color: #111827; text-decoration: none;">0559629469</a></p>
+            </td>
+          </tr>
+        </table>
+        
+        <table width="100%" border="0" cellpadding="20" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 12px; margin-bottom: 40px;">
+          <tr>
+            <td>
+              <p style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: #0EA5E9;">&#9992;&#65039; Telegram</p>
+              <p style="margin: 0; font-size: 15px;"><a href="https://t.me/tuawn_anh" style="color: #111827; text-decoration: none;">@tuawn_anh</a></p>
+            </td>
+          </tr>
+        </table>
+
+        <!-- CTA -->
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 48px;">
+          <tr>
+            <td align="center">
+              <a href="https://zalo.me/0559629469" style="display: block; background-color: #2563EB; color: #FFFFFF; text-decoration: none; padding: 18px 0; font-size: 16px; font-weight: 600; border-radius: 12px; text-align: center;">Gia hạn ngay</a>
+            </td>
+          </tr>
+        </table>
+
+        <hr style="border: 0; border-top: 1px solid #E5E7EB; margin: 0 0 24px 0;">
+
+        <!-- FOOTER -->
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td align="center">
+              <p style="margin: 0 0 8px 0; font-size: 13px; color: #6B7280; font-weight: 500;">Đây là email gửi tự động.</p>
+              <p style="margin: 0; font-size: 13px; color: #6B7280;">Nếu cần hỗ trợ vui lòng liên hệ Zalo.</p>
+            </td>
+          </tr>
+        </table>
+        
       </div>
       `;
       
