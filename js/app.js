@@ -454,6 +454,9 @@ const App = {
     }
 
     DataManager.saveProducts(products);
+    if (SheetsAPI.isConnected()) {
+      SheetsAPI.queueSync(() => SheetsAPI.syncSheet('Sản phẩm', products));
+    }
     this.closeProductModal();
     this._renderSettings();
   },
@@ -470,6 +473,9 @@ const App = {
     if (confirm(`Bạn có chắc chắn muốn xoá sản phẩm "${p.name}"?`)) {
       products.splice(index, 1);
       DataManager.saveProducts(products);
+      if (SheetsAPI.isConnected()) {
+        SheetsAPI.queueSync(() => SheetsAPI.syncSheet('Sản phẩm', products));
+      }
       Utils.showToast(`Đã xoá sản phẩm "${p.name}"`, 'success');
       this._renderSettings();
     }
@@ -480,6 +486,9 @@ const App = {
     const el = document.getElementById('settings-email-template');
     if (el) {
       DataManager.saveEmailTemplate(el.value);
+      if (SheetsAPI.isConnected()) {
+        SheetsAPI.queueSync(() => SheetsAPI.syncSheet('Cài đặt', [{ key: 'emailTemplate', value: el.value }]));
+      }
       Utils.showToast('Đã lưu mẫu Email', 'success');
     }
   },

@@ -211,6 +211,9 @@ const SheetsAPI = {
         accounts: DataManager.getAccounts(),
         platforms: DataManager.getPlatforms(),
         products: DataManager.getProducts(),
+        settings: [
+          { key: 'emailTemplate', value: DataManager.getEmailTemplate() }
+        ]
       };
 
       await this.pushAll(data);
@@ -262,6 +265,17 @@ const SheetsAPI = {
           duration: Number(row.duration) || 1,
         }));
         if (products.length > 0) DataManager.saveProducts(products);
+      }
+
+      if (sheetData['Cài đặt']) {
+        const settingsMap = {};
+        sheetData['Cài đặt'].forEach(row => {
+          if (row.key) settingsMap[row.key] = row.value || '';
+        });
+        
+        if (settingsMap['emailTemplate']) {
+          DataManager.saveEmailTemplate(settingsMap['emailTemplate']);
+        }
       }
 
       this._setSyncStatus('success');

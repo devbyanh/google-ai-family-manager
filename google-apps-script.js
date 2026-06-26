@@ -23,6 +23,7 @@ const HEADERS = {
   'Acc mẹ': ['_id', 'accNumber', 'email', 'plan', 'note', 'createdAt'],
   'Nền tảng': ['name'],
   'Sản phẩm': ['id', 'name', 'price', 'color', 'duration'],
+  'Cài đặt': ['key', 'value'],
 };
 
 // ========== GET HANDLER ==========
@@ -141,6 +142,7 @@ function syncAllData(data) {
     accounts: 'Acc mẹ',
     platforms: 'Nền tảng',
     products: 'Sản phẩm',
+    settings: 'Cài đặt',
   };
 
   for (const key in keyMap) {
