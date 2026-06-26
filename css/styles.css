@@ -1188,6 +1188,11 @@ textarea.form-control {
   flex-wrap: wrap;
 }
 
+.toolbar-left .form-control {
+  width: auto;
+  min-width: 150px;
+}
+
 .toolbar-right {
   display: flex;
   align-items: center;

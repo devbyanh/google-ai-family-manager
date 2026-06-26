@@ -274,32 +274,6 @@ const DataManager = {
   },
 
   // ==========================================
-  // BACKUP / RESTORE
-  // ==========================================
-  exportBackup() {
-    const data = {
-      version: 1,
-      exportDate: new Date().toISOString(),
-      orders: this.getOrders(),
-      accounts: this.getAccounts(),
-      platforms: this.getPlatforms(),
-      products: this.getProducts(),
-    };
-    const filename = `gaf_backup_${new Date().toISOString().slice(0, 10)}.json`;
-    Utils.exportJSON(data, filename);
-  },
-
-  importBackup(data) {
-    if (!data.orders || !data.accounts) {
-      throw new Error('File backup không hợp lệ');
-    }
-    if (data.orders) this.saveOrders(data.orders);
-    if (data.accounts) this.saveAccounts(data.accounts);
-    if (data.platforms) this.savePlatforms(data.platforms);
-    if (data.products) this.saveProducts(data.products);
-  },
-
-  // ==========================================
   // IMPORT FROM CSV (Google Sheet export)
   // ==========================================
   importOrdersFromCSV(rows) {

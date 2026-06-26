@@ -135,33 +135,6 @@ const App = {
       }
     });
 
-    // Backup button
-    document.getElementById('btn-backup')?.addEventListener('click', () => {
-      DataManager.exportBackup();
-      Utils.showToast('Đã xuất file backup', 'success');
-    });
-
-    // Restore button
-    document.getElementById('btn-restore')?.addEventListener('click', () => {
-      document.getElementById('restore-file-input').click();
-    });
-
-    document.getElementById('restore-file-input')?.addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      try {
-        const text = await Utils.readFile(file);
-        const data = JSON.parse(text);
-        DataManager.importBackup(data);
-        Utils.showToast(`Đã khôi phục dữ liệu (${data.orders?.length || 0} đơn, ${data.accounts?.length || 0} acc)`, 'success');
-        this._renderPage(this.currentPage);
-        this.updateBadges();
-      } catch (err) {
-        Utils.showToast('Lỗi: File backup không hợp lệ', 'error');
-      }
-      e.target.value = '';
-    });
-
     // Global search
     const globalSearch = document.getElementById('global-search');
     if (globalSearch) {
@@ -446,26 +419,6 @@ const App = {
       }
     } catch (err) {
       Utils.showToast('Lỗi đọc file CSV: ' + err.message, 'error');
-    }
-    event.target.value = '';
-  },
-
-  async restoreBackup(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    try {
-      const text = await Utils.readFile(file);
-      const data = JSON.parse(text);
-      DataManager.importBackup(data);
-      Utils.showToast(`Đã khôi phục: ${data.orders?.length || 0} đơn, ${data.accounts?.length || 0} acc`, 'success');
-      this._renderPage(this.currentPage);
-      this.updateBadges();
-      // Full sync to Google Sheet after restore
-      if (SheetsAPI.isConnected()) {
-        SheetsAPI.queueSync(() => SheetsAPI.fullSync());
-      }
-    } catch (err) {
-      Utils.showToast('Lỗi: File backup không hợp lệ', 'error');
     }
     event.target.value = '';
   },

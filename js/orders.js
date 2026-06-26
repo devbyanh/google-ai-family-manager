@@ -38,7 +38,6 @@ const Orders = {
           </select>
         </div>
         <div class="toolbar-right">
-          <button class="btn btn-secondary" onclick="Orders.exportOrders()">📥 Xuất CSV</button>
           <button class="btn btn-primary" onclick="Orders.openModal()">➕ Thêm đơn hàng</button>
         </div>
       </div>
