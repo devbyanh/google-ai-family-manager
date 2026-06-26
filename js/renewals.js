@@ -231,29 +231,40 @@ const Renewals = {
       // Convert plain text to HTML
       let bodyHtmlContent = bodyText.replace(/\n/g, '<br>');
       
+      // Auto-highlight important keywords
+      bodyHtmlContent = bodyHtmlContent.replace(/Google AI Pro/gi, '<strong style="color: #2563eb;">Google AI Pro</strong>');
+      bodyHtmlContent = bodyHtmlContent.replace(/Gemini Pro/gi, '<strong style="color: #8b5cf6;">Gemini Pro</strong>');
+      bodyHtmlContent = bodyHtmlContent.replace(/5TB/gi, '<strong style="color: #ec4899;">5TB</strong>');
+      bodyHtmlContent = bodyHtmlContent.replace(/Antigravity/gi, '<strong style="color: #f97316;">Antigravity</strong>');
+      bodyHtmlContent = bodyHtmlContent.replace(new RegExp(data.product, 'g'), `<strong style="color: #ef4444; background: #fee2e2; padding: 2px 6px; border-radius: 4px;">${data.product}</strong>`);
+      
       let htmlWrapper = `
-      <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; background-color: #f4f7f6; padding: 40px 20px; color: #333;">
-        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+      <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; background-color: #f3f4f6; padding: 40px 20px; color: #1f2937;">
+        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);">
           <!-- Header -->
-          <div style="background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%); padding: 25px 20px; text-align: center;">
-            <h2 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.5px;">THÔNG BÁO DỊCH VỤ</h2>
+          <div style="background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%); padding: 30px 20px; text-align: center;">
+            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+              <span style="font-size: 30px;">⚠️</span>
+            </div>
+            <h2 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">THÔNG BÁO GIA HẠN DỊCH VỤ</h2>
           </div>
           
           <!-- Body -->
-          <div style="padding: 35px 30px;">
-            <div style="font-size: 15px; line-height: 1.7; color: #374151;">
+          <div style="padding: 40px 35px;">
+            <div style="font-size: 16px; line-height: 1.8; color: #374151;">
               ${bodyHtmlContent}
             </div>
             
-            <div style="margin-top: 30px; text-align: center;">
-              <a href="https://zalo.me/0559629469" style="display: inline-block; background: #2563eb; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 25px; font-weight: 600; font-size: 14px;">Gia Hạn Ngay Qua Zalo</a>
+            <div style="margin-top: 35px; text-align: center; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;">
+              <p style="margin: 0 0 15px 0; font-weight: 600; color: #475569;">Bấm vào nút bên dưới để nhận hỗ trợ ngay lập tức:</p>
+              <a href="https://zalo.me/0559629469" style="display: inline-block; background: linear-gradient(to right, #2563eb, #3b82f6); color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 15px; box-shadow: 0 4px 14px rgba(37,99,235,0.3); transition: all 0.3s;">Gia Hạn Ngay Qua Zalo</a>
             </div>
           </div>
           
           <!-- Footer -->
-          <div style="background: #f8fafc; padding: 20px; text-align: center; border-top: 1px solid #e2e8f0;">
-            <p style="font-size: 13px; color: #64748b; margin: 0 0 5px 0;">Cảm ơn Anh/Chị đã tin tưởng và sử dụng dịch vụ của chúng tôi!</p>
-            <p style="font-size: 11px; color: #94a3b8; margin: 0;">Đây là email tự động từ hệ thống. Quý khách vui lòng liên hệ qua Zalo/Telegram để được hỗ trợ nhanh nhất.</p>
+          <div style="background: #f1f5f9; padding: 25px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+            <p style="font-size: 14px; font-weight: 600; color: #475569; margin: 0 0 8px 0;">Cảm ơn Anh/Chị đã tin tưởng và sử dụng dịch vụ!</p>
+            <p style="font-size: 12px; color: #94a3b8; margin: 0; line-height: 1.5;">Đây là email tự động gửi từ hệ thống quản lý.<br>Quý khách vui lòng liên hệ trực tiếp qua Zalo/Telegram.</p>
           </div>
         </div>
       </div>
