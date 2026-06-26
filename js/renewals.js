@@ -6,11 +6,17 @@ const Renewals = {
   selectedEmails: new Set(),
   
   render() {
+    const products = DataManager.getProducts();
+
     const container = document.getElementById('page-renewals');
     container.innerHTML = `
       <!-- Toolbar -->
       <div class="toolbar">
         <div class="toolbar-left">
+          <select class="form-control" id="filter-product-renewals" style="min-width:160px" onchange="Renewals.handleFilterChange()">
+            <option value="">Tất cả sản phẩm</option>
+            ${products.map(p => `<option value="${p.name}">${p.name}</option>`).join('')}
+          </select>
           <select class="form-control" id="filter-days" style="min-width:160px" onchange="Renewals.handleFilterChange()">
             <option value="7">Sắp hết hạn (trong 7 ngày)</option>
             <option value="15">Sắp hết hạn (trong 15 ngày)</option>
@@ -63,6 +69,7 @@ const Renewals = {
     const orders = DataManager.getOrders();
     const products = DataManager.getProducts();
     const daysFilter = parseInt(document.getElementById('filter-days').value);
+    const productFilter = document.getElementById('filter-product-renewals').value;
     
     const now = new Date();
     // Reset time for accurate day difference
@@ -73,6 +80,7 @@ const Renewals = {
     orders.forEach(o => {
       // Only process valid orders with email and date
       if (!o.email || !o.orderDate || o.status !== 'Đã thanh toán') return;
+      if (productFilter && o.product !== productFilter) return;
 
       const orderDate = Utils.parseVietnameseDate(o.orderDate);
       if (!orderDate || isNaN(orderDate)) return;
