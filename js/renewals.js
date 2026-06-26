@@ -225,58 +225,111 @@ const Renewals = {
 
     this.selectedEmails.forEach(jsonStr => {
       const data = JSON.parse(jsonStr);
-      // Replace variables in template
-      let bodyText = template.replace(/\[Ten_Goi\]/g, data.product);
-      
-      // Split text into paragraphs by double newlines, then replace single newlines with <br>
-      let paragraphs = bodyText.split(/\n\n+/);
-      let bodyHtmlContent = paragraphs.map(p => {
-        let text = p.replace(/\n/g, '<br>');
-        
-        // Beautiful prominent highlighting
-        text = text.replace(/Google AI Pro/gi, '<span style="color: #ef4444; font-weight: 700;">Google AI Pro</span>');
-        text = text.replace(new RegExp(data.product, 'g'), `<span style="background: #fee2e2; color: #dc2626; border: 1px solid #f87171; border-radius: 4px; padding: 2px 8px; font-weight: bold; margin: 0 4px;">${data.product}</span>`);
-        text = text.replace(/đã hết hạn sử dụng\./gi, '<span style="color: #dc2626; font-weight: bold;">đã hết hạn sử dụng.</span>');
-        text = text.replace(/cấm thay đổi nhóm gia đình trong vòng 12 tháng/gi, '<span style="color: #dc2626; text-decoration: underline; font-style: italic; font-weight: bold;">cấm thay đổi nhóm gia đình trong vòng 12 tháng</span>');
-        
-        // Contact info highlighting
-        text = text.replace(/Zalo:/gi, '<span style="color: #0068ff; font-weight: bold;">Zalo:</span>');
-        text = text.replace(/Telegram:/gi, '<span style="color: #24a1de; font-weight: bold;">Telegram:</span>');
-        
-        return `<p style="margin: 0 0 16px 0;">${text}</p>`;
-      }).join('');
-      
       let htmlWrapper = `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; padding: 40px 20px; color: #1e293b;">
-        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);">
+      <!-- Container -->
+      <div style="font-family: 'Segoe UI', Inter, Arial, sans-serif; background-color: #F8FAFC; padding: 40px 16px; color: #1E293B; line-height: 1.8; font-size: 15px; -webkit-font-smoothing: antialiased;">
+        <!-- Main Card -->
+        <div style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 16px; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025); overflow: hidden; border: 1px solid #E2E8F0;">
           
-          <!-- Header -->
-          <div style="background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); padding: 35px 30px; text-align: center; border-bottom: 4px solid #fde047;">
-            <div style="background: rgba(255,255,255,0.2); width: 60px; height: 60px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px; font-size: 30px; line-height: 60px;">
-              &#9888;&#65039;
+          <!-- ======================== -->
+          <!-- HEADER -->
+          <!-- ======================== -->
+          <div style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); text-align: center; padding: 48px 24px;">
+            <div style="background: linear-gradient(135deg, #2563EB 0%, #0EA5E9 100%); width: 72px; height: 72px; border-radius: 20px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2); transform: rotate(-5deg);">
+              <span style="font-size: 32px; transform: rotate(5deg); display: block;">&#9888;&#65039;</span>
             </div>
-            <h2 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">THÔNG BÁO HẾT HẠN</h2>
+            <h1 style="margin: 0 0 12px 0; font-size: 28px; color: #FFFFFF; font-weight: 700; letter-spacing: -0.5px;">THÔNG BÁO GIA HẠN DỊCH VỤ</h1>
+            <p style="margin: 0; font-size: 16px; color: #94A3B8; font-weight: 500;">Google AI Pro</p>
           </div>
-          
-          <!-- Body -->
-          <div style="padding: 40px 35px 20px 35px;">
-            <div style="font-size: 16px; line-height: 1.7; color: #334155;">
-              ${bodyHtmlContent}
+
+          <!-- ======================== -->
+          <!-- BODY -->
+          <!-- ======================== -->
+          <div style="padding: 40px;">
+            
+            <!-- Section 1: Greeting -->
+            <p style="margin-top: 0; margin-bottom: 32px; font-size: 16px;">Xin chào Anh/Chị,</p>
+            
+            <!-- Section 2: Order Info Card -->
+            <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 24px; margin-bottom: 32px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+              
+              <!-- Package -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
+                <tr>
+                  <td width="36" style="vertical-align: top;"><div style="background: #F1F5F9; width: 28px; height: 28px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;">&#128230;</div></td>
+                  <td>
+                    <p style="margin: 0; font-size: 13px; color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Gói dịch vụ</p>
+                    <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: 700; color: #1E293B;">Google AI Pro ${data.product}</p>
+                  </td>
+                </tr>
+              </table>
+              
+              <!-- Status -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+                <tr>
+                  <td width="36" style="vertical-align: top;"><div style="background: #F1F5F9; width: 28px; height: 28px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;">&#128197;</div></td>
+                  <td>
+                    <p style="margin: 0; font-size: 13px; color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Trạng thái</p>
+                    <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: 700; color: #DC2626;">Đã hết hạn</p>
+                  </td>
+                </tr>
+              </table>
+              
+              <!-- Warning Alert -->
+              <div style="background-color: #FEF2F2; border: 1px solid #FCA5A5; padding: 16px; border-radius: 8px;">
+                <p style="margin: 0; font-size: 14px; color: #991B1B; line-height: 1.6;"><span style="font-weight: 700; color: #DC2626;">&#9888;&#65039; Lưu ý:</span> Nếu thay đổi nhóm gia đình sẽ bị cấm tham gia lại trong vòng 12 tháng.</p>
+              </div>
             </div>
-          </div>
-          
-          <!-- Action Box -->
-          <div style="padding: 10px 35px 40px 35px; text-align: center;">
-            <div style="background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 25px;">
-              <p style="margin: 0 0 15px 0; font-size: 15px; color: #475569; font-weight: 600;">&#128071; Vui lòng liên hệ Zalo để gia hạn ngay &#128071;</p>
-              <a href="https://zalo.me/0559629469" style="display: inline-block; background: linear-gradient(to right, #0068ff, #005ce6); color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 16px; box-shadow: 0 8px 16px rgba(0, 104, 255, 0.25); transition: all 0.2s;">&#128172; Liên Hệ Zalo Hỗ Trợ</a>
+
+            <!-- Section 3: Value Proposition -->
+            <div style="background-color: #FEF3C7; border: 1px solid #FDE68A; border-radius: 12px; padding: 28px; margin-bottom: 32px;">
+              <h3 style="margin: 0 0 20px 0; font-size: 16px; color: #92400E; font-weight: 700;">&#128161; Vì sao nên gia hạn?</h3>
+              <ul style="margin: 0; padding-left: 20px; color: #92400E; font-size: 15px; line-height: 2;">
+                <li>Không bị gián đoạn dịch vụ</li>
+                <li>Tiếp tục dùng <strong>Gemini Pro</strong></li>
+                <li><strong>NotebookLM</strong></li>
+                <li><strong>Veo</strong></li>
+                <li><strong>Antigravity</strong></li>
+                <li><strong>Google AI Pro</strong></li>
+                <li><strong>5TB Cloud</strong></li>
+              </ul>
             </div>
+
+            <!-- Section 4: Contact Info -->
+            <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 24px; margin-bottom: 40px;">
+              <h3 style="margin: 0 0 20px 0; font-size: 13px; color: #64748B; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Thông tin liên hệ</h3>
+              
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 16px;">
+                <tr>
+                  <td width="40" style="vertical-align: middle;"><div style="background: #DBEAFE; width: 32px; height: 32px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 16px;">&#128172;</div></td>
+                  <td style="font-size: 16px;"><strong style="color: #2563EB;">Zalo:</strong> <a href="https://zalo.me/0559629469" style="color: #1E293B; text-decoration: none; font-weight: 500;">0559629469</a></td>
+                </tr>
+              </table>
+              
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="40" style="vertical-align: middle;"><div style="background: #E0F2FE; width: 32px; height: 32px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 16px;">&#9992;&#65039;</div></td>
+                  <td style="font-size: 16px;"><strong style="color: #0EA5E9;">Telegram:</strong> <a href="https://t.me/tuawn_anh" style="color: #1E293B; text-decoration: none; font-weight: 500;">@tuawn_anh</a></td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- ======================== -->
+            <!-- CTA BUTTON -->
+            <!-- ======================== -->
+            <div style="text-align: center;">
+              <a href="https://zalo.me/0559629469" style="display: inline-block; background: linear-gradient(135deg, #2563EB 0%, #0EA5E9 100%); color: #FFFFFF; text-decoration: none; padding: 16px 48px; font-size: 16px; font-weight: 700; border-radius: 100px; box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4); text-transform: uppercase; letter-spacing: 1px;">Gia Hạn Ngay</a>
+            </div>
+            
           </div>
-          
-          <!-- Footer -->
-          <div style="background-color: #f8fafc; padding: 20px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-            <p style="font-size: 13px; font-weight: 600; color: #475569; margin: 0 0 5px 0;">Trân trọng cảm ơn quý khách!</p>
-            <p style="font-size: 12px; color: #94a3b8; margin: 0; line-height: 1.5;">Đây là hệ thống gửi thư tự động.<br>Quý khách vui lòng phản hồi qua các kênh liên hệ chính thức.</p>
+
+          <!-- ======================== -->
+          <!-- FOOTER -->
+          <!-- ======================== -->
+          <div style="background-color: #F8FAFC; padding: 32px 40px; text-align: center; border-top: 1px solid #E2E8F0;">
+            <div style="font-size: 28px; margin-bottom: 16px; opacity: 0.8;">&#129302;</div>
+            <p style="margin: 0 0 8px 0; font-size: 13px; color: #64748B; font-weight: 500;">Đây là email gửi tự động.</p>
+            <p style="margin: 0; font-size: 13px; color: #64748B;">Nếu cần hỗ trợ vui lòng liên hệ Zalo.</p>
           </div>
           
         </div>
