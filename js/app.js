@@ -412,9 +412,30 @@ const App = {
 
     if (this.editingProductIndex !== null) {
       // Edit mode
+      const oldName = products[this.editingProductIndex].name;
+
       products[this.editingProductIndex].name = name;
       products[this.editingProductIndex].price = Number(price);
       products[this.editingProductIndex].duration = Number(duration);
+
+      // Update all existing orders if product name changed
+      if (oldName !== name) {
+        const orders = DataManager.getOrders();
+        let changed = false;
+        orders.forEach(o => {
+          if (o.product === oldName) {
+            o.product = name;
+            changed = true;
+          }
+        });
+        if (changed) {
+          DataManager.saveOrders(orders);
+          if (SheetsAPI.isConnected()) {
+            SheetsAPI.queueSync(() => SheetsAPI.syncSheet('Đơn hàng', orders));
+          }
+        }
+      }
+
       Utils.showToast('Đã cập nhật sản phẩm', 'success');
     } else {
       // Add mode
