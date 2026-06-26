@@ -121,6 +121,36 @@
     </div>
   </div>
 
+  <!-- Product Modal -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="product-modal-title">Thêm sản phẩm mới</h2>
+        <button class="modal-close" onclick="App.closeProductModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="product-form" onsubmit="event.preventDefault()">
+          <div class="form-group">
+            <label class="form-label required">Tên sản phẩm</label>
+            <input type="text" class="form-control" id="product-name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Giá (VNĐ)</label>
+            <input type="number" class="form-control" id="product-price" value="40000" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Thời hạn (Tháng)</label>
+            <input type="number" class="form-control" id="product-duration" value="1" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeProductModal()">Huỷ</button>
+        <button class="btn btn-primary" onclick="App.saveProduct()">💾 Lưu</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Confirm Dialog -->
   <div class="modal-overlay confirm-dialog" id="confirm-dialog">
     <div class="modal">

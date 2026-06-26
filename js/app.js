@@ -4,6 +4,7 @@
 
 const App = {
   currentPage: 'dashboard',
+  editingProductIndex: null,
 
   init() {
     DataManager.init();
@@ -279,7 +280,7 @@ const App = {
             </table>
           </div>
           <div class="mt-4">
-            <button class="btn btn-secondary" onclick="App.addProductPrompt()">➕ Thêm sản phẩm</button>
+            <button class="btn btn-secondary" onclick="App.openProductModal()">➕ Thêm sản phẩm</button>
           </div>
         </div>
       </div>
@@ -367,27 +368,75 @@ const App = {
   },
 
   // --- Product management ---
-  editProduct(index) {
+  openProductModal(index = null) {
+    this.editingProductIndex = index;
+    const modal = document.getElementById('product-modal');
+    const title = document.getElementById('product-modal-title');
+    const nameInput = document.getElementById('product-name');
+    const priceInput = document.getElementById('product-price');
+    const durationInput = document.getElementById('product-duration');
+
+    if (index !== null) {
+      const products = DataManager.getProducts();
+      const p = products[index];
+      title.textContent = 'Sửa thông tin sản phẩm';
+      nameInput.value = p.name;
+      priceInput.value = p.price;
+      durationInput.value = p.duration;
+    } else {
+      title.textContent = 'Thêm sản phẩm mới';
+      document.getElementById('product-form').reset();
+      priceInput.value = '40000';
+      durationInput.value = '1';
+    }
+
+    modal.classList.add('active');
+  },
+
+  closeProductModal() {
+    document.getElementById('product-modal').classList.remove('active');
+    this.editingProductIndex = null;
+  },
+
+  saveProduct() {
+    const name = document.getElementById('product-name').value.trim();
+    const price = document.getElementById('product-price').value;
+    const duration = document.getElementById('product-duration').value;
+
+    if (!name || !price || !duration) {
+      Utils.showToast('Vui lòng điền đủ thông tin', 'warning');
+      return;
+    }
+
     const products = DataManager.getProducts();
-    const p = products[index];
-    if (!p) return;
 
-    const name = prompt('Sửa tên sản phẩm:', p.name);
-    if (!name || !name.trim()) return;
-
-    const price = prompt(`Sửa giá cho "${name.trim()}" (VNĐ):`, p.price);
-    if (price === null) return;
-
-    const duration = prompt(`Sửa thời hạn (tháng) cho "${name.trim()}":`, p.duration);
-    if (duration === null) return;
-
-    products[index].name = name.trim();
-    products[index].price = Number(price) || 0;
-    products[index].duration = Number(duration) || 1;
+    if (this.editingProductIndex !== null) {
+      // Edit mode
+      products[this.editingProductIndex].name = name;
+      products[this.editingProductIndex].price = Number(price);
+      products[this.editingProductIndex].duration = Number(duration);
+      Utils.showToast('Đã cập nhật sản phẩm', 'success');
+    } else {
+      // Add mode
+      const colors = ['#10b981', '#f59e0b', '#3b82f6', '#8b5cf6', '#ef4444', '#ec4899', '#06b6d4'];
+      const id = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+      products.push({
+        id,
+        name: name,
+        price: Number(price),
+        color: colors[products.length % colors.length],
+        duration: Number(duration),
+      });
+      Utils.showToast(`Đã thêm sản phẩm "${name}"`, 'success');
+    }
 
     DataManager.saveProducts(products);
-    Utils.showToast('Đã cập nhật thông tin sản phẩm', 'success');
+    this.closeProductModal();
     this._renderSettings();
+  },
+
+  editProduct(index) {
+    this.openProductModal(index);
   },
 
   deleteProduct(index) {
@@ -403,30 +452,6 @@ const App = {
     }
   },
 
-  addProductPrompt() {
-    const name = prompt('Tên sản phẩm:');
-    if (!name) return;
-    const price = prompt('Giá (VNĐ):', '40000');
-    if (price === null) return;
-    const duration = prompt('Thời hạn (tháng):', '1');
-    if (duration === null) return;
-
-    const colors = ['#10b981', '#f59e0b', '#3b82f6', '#8b5cf6', '#ef4444', '#ec4899', '#06b6d4'];
-    const products = DataManager.getProducts();
-    const id = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
-
-    products.push({
-      id,
-      name: name.trim(),
-      price: Number(price) || 0,
-      color: colors[products.length % colors.length],
-      duration: Number(duration) || 1,
-    });
-
-    DataManager.saveProducts(products);
-    Utils.showToast(`Đã thêm sản phẩm "${name}"`, 'success');
-    this._renderSettings();
-  },
   // --- Email Template ---
   saveEmailTemplate() {
     const el = document.getElementById('settings-email-template');
