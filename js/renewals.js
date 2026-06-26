@@ -225,6 +225,10 @@ const Renewals = {
 
     this.selectedEmails.forEach(jsonStr => {
       const data = JSON.parse(jsonStr);
+      
+      // Fallback plain text email
+      let bodyText = template.replace(/\[Ten_Goi\]/g, data.product);
+      
       let htmlWrapper = `
       <!-- Container -->
       <div style="font-family: 'Segoe UI', Inter, Arial, sans-serif; background-color: #F8FAFC; padding: 40px 16px; color: #1E293B; line-height: 1.8; font-size: 15px; -webkit-font-smoothing: antialiased;">
