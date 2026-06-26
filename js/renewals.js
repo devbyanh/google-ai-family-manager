@@ -232,13 +232,13 @@ const Renewals = {
       let bodyHtmlContent = bodyText.replace(/\n/g, '<br>');
       
       // Auto-highlight important keywords
-      bodyHtmlContent = bodyHtmlContent.replace(/Google AI Pro/gi, '<strong style="color: #2563eb; font-size: 16px;">✨ Google AI Pro</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(/Gemini Pro/gi, '<strong style="color: #8b5cf6;">🚀 Gemini Pro</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(/5TB/gi, '<strong style="color: #ec4899;">☁️ 5TB</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(/Antigravity/gi, '<strong style="color: #f97316;">⚡ Antigravity</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(/Zalo:/gi, '<br><strong style="color: #0068ff; font-size: 16px;">💬 Zalo:</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(/Telegram:/gi, '<strong style="color: #24a1de; font-size: 16px;">✈️ Telegram:</strong>');
-      bodyHtmlContent = bodyHtmlContent.replace(new RegExp(data.product, 'g'), `<strong style="color: #ef4444; background: #fee2e2; padding: 3px 8px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">💎 ${data.product}</strong>`);
+      bodyHtmlContent = bodyHtmlContent.replace(/Google AI Pro/gi, '<strong style="color: #2563eb; font-size: 16px;">&#10024; Google AI Pro</strong>');
+      bodyHtmlContent = bodyHtmlContent.replace(/Gemini Pro/gi, '<strong style="color: #8b5cf6;">&#128640; Gemini Pro</strong>');
+      bodyHtmlContent = bodyHtmlContent.replace(/5TB/gi, '<strong style="color: #ec4899;">&#9729;&#65039; 5TB</strong>');
+      bodyHtmlContent = bodyHtmlContent.replace(/Antigravity/gi, '<strong style="color: #f97316;">&#9889; Antigravity</strong>');
+      bodyHtmlContent = bodyHtmlContent.replace(/Zalo:/gi, '<br><strong style="color: #0068ff; font-size: 16px;">&#128172; Zalo:</strong>');
+      bodyHtmlContent = bodyHtmlContent.replace(/Telegram:/gi, '<strong style="color: #24a1de; font-size: 16px;">&#9992;&#65039; Telegram:</strong>');
+      bodyHtmlContent = bodyHtmlContent.replace(new RegExp(data.product, 'g'), `<strong style="color: #ef4444; background: #fee2e2; padding: 3px 8px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">&#128142; ${data.product}</strong>`);
       
       let htmlWrapper = `
       <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; background-color: #f3f4f6; padding: 40px 20px; color: #1f2937;">
@@ -246,7 +246,7 @@ const Renewals = {
           <!-- Header -->
           <div style="background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%); padding: 35px 20px; text-align: center; border-bottom: 4px solid #fcd34d;">
             <div style="width: 70px; height: 70px; background: rgba(255,255,255,0.25); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-              <span style="font-size: 35px;">⚠️</span>
+              <span style="font-size: 35px;">&#9888;&#65039;</span>
             </div>
             <h2 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); text-transform: uppercase;">Thông báo hết hạn</h2>
           </div>
@@ -258,8 +258,8 @@ const Renewals = {
             </div>
             
             <div style="margin-top: 40px; text-align: center; padding: 25px; background: #f8fafc; border-radius: 16px; border: 2px dashed #94a3b8;">
-              <p style="margin: 0 0 15px 0; font-weight: 600; color: #334155; font-size: 15px;">👇 Bấm vào nút bên dưới để gia hạn ngay 👇</p>
-              <a href="https://zalo.me/0559629469" style="display: inline-block; background: linear-gradient(to right, #0068ff, #005ce6); color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 16px; box-shadow: 0 8px 20px rgba(0, 104, 255, 0.3); transition: all 0.3s;">💬 Chat Zalo Hỗ Trợ</a>
+              <p style="margin: 0 0 15px 0; font-weight: 600; color: #334155; font-size: 15px;">&#128071; Bấm vào nút bên dưới để gia hạn ngay &#128071;</p>
+              <a href="https://zalo.me/0559629469" style="display: inline-block; background: linear-gradient(to right, #0068ff, #005ce6); color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 16px; box-shadow: 0 8px 20px rgba(0, 104, 255, 0.3); transition: all 0.3s;">&#128172; Chat Zalo Hỗ Trợ</a>
             </div>
           </div>
           
