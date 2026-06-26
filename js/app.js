@@ -8,6 +8,15 @@ const App = {
 
   init() {
     DataManager.init();
+    
+    // Load Theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      const btn = document.getElementById('theme-toggle');
+      if (btn) btn.textContent = '☀️';
+    }
+
     this._bindNavigation();
     this._bindGlobalEvents();
     
@@ -78,6 +87,22 @@ const App = {
     card.classList.remove('shake');
     void card.offsetWidth; // trigger reflow
     card.classList.add('shake');
+  },
+
+  toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    const btn = document.getElementById('theme-toggle');
+    
+    if (newTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      btn.textContent = '☀️';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      btn.textContent = '🌙';
+    }
+    
+    localStorage.setItem('theme', newTheme);
   },
 
   handleLogout() {
@@ -214,25 +239,127 @@ const App = {
       }
     });
 
-    // Global search
-    const globalSearch = document.getElementById('global-search');
-    if (globalSearch) {
-      globalSearch.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          const q = globalSearch.value.trim();
-          if (q) {
-            this.navigate('orders');
-            setTimeout(() => {
-              const orderSearch = document.getElementById('order-search');
-              if (orderSearch) {
-                orderSearch.value = q;
-                orderSearch.dispatchEvent(new Event('input'));
-              }
-            }, 100);
-          }
-        }
+    // Command Menu (Ctrl + K)
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        App.openCommandMenu();
+      }
+    });
+
+    const cmdInput = document.getElementById('cmd-search-input');
+    if (cmdInput) {
+      cmdInput.addEventListener('input', (e) => {
+        App.handleCommandSearch(e.target.value.trim());
       });
     }
+  },
+
+  openCommandMenu() {
+    const modal = document.getElementById('cmd-modal');
+    const input = document.getElementById('cmd-search-input');
+    modal.classList.add('active');
+    input.value = '';
+    this.handleCommandSearch('');
+    setTimeout(() => input.focus(), 100);
+  },
+
+  handleCommandSearch(query) {
+    const resultsContainer = document.getElementById('cmd-search-results');
+    if (!query) {
+      resultsContainer.innerHTML = '<div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">Gõ từ khoá để tìm kiếm siêu tốc (Tên, Email, Mã đơn...)</div>';
+      return;
+    }
+
+    const q = query.toLowerCase();
+    const orders = DataManager.getOrders();
+    const accounts = DataManager.getAccounts();
+    let resultsHtml = '';
+
+    // Search Orders
+    const matchedOrders = orders.filter(o => 
+      o.email.toLowerCase().includes(q) || 
+      o.madon.toLowerCase().includes(q) || 
+      (o.note && o.note.toLowerCase().includes(q))
+    ).slice(0, 5);
+
+    if (matchedOrders.length > 0) {
+      resultsHtml += '<div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin: 8px 8px 4px 8px;">Đơn hàng</div>';
+      matchedOrders.forEach(o => {
+        resultsHtml += `
+          <div onclick="App.jumpToOrder('${o._id}')" style="padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;" onmouseover="this.style.background='var(--bg-card-hover)'" onmouseout="this.style.background='transparent'">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 18px;">📄</span>
+              <div>
+                <div style="color: var(--text-primary); font-weight: 500;">${Utils.escapeHtml(o.email)}</div>
+                <div style="color: var(--text-muted); font-size: 12px;">${o.madon} • ${o.product}</div>
+              </div>
+            </div>
+            <span style="font-size: 12px; background: var(--bg-input); padding: 4px 8px; border-radius: 4px;">Đi tới ➡️</span>
+          </div>
+        `;
+      });
+    }
+
+    // Search Accounts
+    const matchedAccounts = accounts.filter(a => 
+      a.email.toLowerCase().includes(q) || 
+      (a.note && a.note.toLowerCase().includes(q))
+    ).slice(0, 3);
+
+    if (matchedAccounts.length > 0) {
+      resultsHtml += '<div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin: 16px 8px 4px 8px;">TK Quản lý</div>';
+      matchedAccounts.forEach(a => {
+        resultsHtml += `
+          <div onclick="App.jumpToAccount('${a._id}')" style="padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;" onmouseover="this.style.background='var(--bg-card-hover)'" onmouseout="this.style.background='transparent'">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 18px;">👤</span>
+              <div>
+                <div style="color: var(--text-primary); font-weight: 500;">${Utils.escapeHtml(a.email)}</div>
+                <div style="color: var(--text-muted); font-size: 12px;">Plan: ${a.plan || 'N/A'}</div>
+              </div>
+            </div>
+            <span style="font-size: 12px; background: var(--bg-input); padding: 4px 8px; border-radius: 4px;">Đi tới ➡️</span>
+          </div>
+        `;
+      });
+    }
+
+    if (!matchedOrders.length && !matchedAccounts.length) {
+      resultsHtml = '<div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">Không tìm thấy kết quả nào cho "' + Utils.escapeHtml(query) + '"</div>';
+    }
+
+    resultsContainer.innerHTML = resultsHtml;
+  },
+
+  jumpToOrder(id) {
+    document.getElementById('cmd-modal').classList.remove('active');
+    this.navigate('orders');
+    setTimeout(() => {
+      const orderSearch = document.getElementById('order-search');
+      if (orderSearch) {
+        const order = DataManager.getOrders().find(o => o._id === id);
+        if (order) {
+          orderSearch.value = order.email; // Use email to filter in orders page
+          orderSearch.dispatchEvent(new Event('input'));
+        }
+      }
+    }, 100);
+  },
+
+  jumpToAccount(id) {
+    document.getElementById('cmd-modal').classList.remove('active');
+    this.navigate('accounts');
+    setTimeout(() => {
+      const accSearch = document.getElementById('acc-search');
+      if (accSearch) {
+        const acc = DataManager.getAccounts().find(a => a._id === id);
+        if (acc) {
+          accSearch.value = acc.email;
+          accSearch.dispatchEvent(new Event('input'));
+        }
+      }
+    }, 100);
   },
 
   updateBadges() {
