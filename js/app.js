@@ -244,6 +244,10 @@ const App = {
             `).join('')}
             <button class="tag-add" onclick="App.addPlatformPrompt()">+ Thêm nền tảng</button>
           </div>
+          <div class="mt-4" style="padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05)">
+            <p class="text-muted mb-2" style="font-size:12px">Nếu bạn có dữ liệu cũ bị sai khác chữ hoa chữ thường (vd: "datammo" và "Datammo"), hãy bấm nút dưới đây để đồng nhất toàn bộ về viết hoa chữ cái đầu.</p>
+            <button class="btn btn-secondary" onclick="App.normalizePlatforms()">✨ Chuẩn hoá toàn bộ Nền tảng</button>
+          </div>
         </div>
       </div>
 
@@ -490,6 +494,34 @@ const App = {
         SheetsAPI.queueSync(() => SheetsAPI.syncSheet('Cài đặt', [{ key: 'emailTemplate', value: el.value }]));
       }
       Utils.showToast('Đã lưu mẫu Email', 'success');
+    }
+  },
+
+  // --- Advanced Tools ---
+  normalizePlatforms() {
+    const orders = DataManager.getOrders();
+    let changed = 0;
+    
+    orders.forEach(o => {
+      if (o.platform) {
+        // Capitalize first letter, lower the rest (datammo -> Datammo)
+        const normalized = o.platform.charAt(0).toUpperCase() + o.platform.slice(1).toLowerCase();
+        if (o.platform !== normalized) {
+          o.platform = normalized;
+          changed++;
+        }
+      }
+    });
+
+    if (changed > 0) {
+      DataManager.saveOrders(orders);
+      if (SheetsAPI.isConnected()) {
+        SheetsAPI.queueSync(() => SheetsAPI.syncSheet('Đơn hàng', orders));
+      }
+      Utils.showToast(`Đã chuẩn hoá thành công ${changed} đơn hàng`, 'success');
+      this.updateBadges();
+    } else {
+      Utils.showToast('Tất cả nền tảng đã chuẩn, không cần thay đổi', 'info');
     }
   },
 
