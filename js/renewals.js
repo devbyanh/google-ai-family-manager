@@ -147,6 +147,7 @@ const Renewals = {
       }
 
       const isChecked = this.selectedEmails.has(o.email);
+      const productObj = DataManager.getProducts().find(p => p.name === o.product);
 
       return `
         <tr>
@@ -155,7 +156,7 @@ const Renewals = {
           </td>
           <td><strong>${Utils.escapeHtml(o.email)}</strong></td>
           <td>${Utils.escapeHtml(o.madon)}</td>
-          <td><span class="badge badge-blue">${Utils.escapeHtml(o.product)}</span></td>
+          <td><span class="badge" style="${productObj ? `border:1px solid ${productObj.color}40; color:${productObj.color}; background:${productObj.color}15` : ''}">${Utils.escapeHtml(o.product)}</span></td>
           <td>${Utils.formatDateISO(o.orderDate)}</td>
           <td><strong>${Utils.formatDateISO(o.expDate)}</strong></td>
           <td>${statusBadge}</td>

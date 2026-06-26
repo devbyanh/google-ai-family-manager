@@ -18,11 +18,11 @@ const DataManager = {
 
   getDefaultProducts() {
     return [
-      { id: 'chinchu_thang', name: 'Chính chủ/Tháng', price: 40000, color: '#10b981', duration: 1 },
-      { id: '3thang', name: '3 Tháng', price: 100000, color: '#f59e0b', duration: 3 },
-      { id: '6thang', name: '6 Tháng', price: 180000, color: '#3b82f6', duration: 6 },
+      { id: 'chinchu_thang', name: 'Chính chủ/Tháng', price: 40000, color: '#0ea5e9', duration: 1 },
+      { id: '3thang', name: '3 Tháng', price: 100000, color: '#7c3aed', duration: 3 },
+      { id: '6thang', name: '6 Tháng', price: 180000, color: '#4f46e5', duration: 6 },
       { id: '1nam', name: '1 Năm Add Farm', price: 300000, color: '#8b5cf6', duration: 12 },
-      { id: 'chinchu', name: 'Chính chủ', price: 50000, color: '#ef4444', duration: 1 },
+      { id: 'chinchu', name: 'Chính chủ', price: 50000, color: '#db2777', duration: 1 },
     ];
   },
 
@@ -51,6 +51,17 @@ Trân trọng.`;
     }
     if (!localStorage.getItem(this.KEYS.PRODUCTS)) {
       this.saveProducts(this.getDefaultProducts());
+    } else {
+      // Migrate old conflicting colors
+      let products = JSON.parse(localStorage.getItem(this.KEYS.PRODUCTS) || '[]');
+      let migrated = false;
+      products.forEach(p => {
+        if (p.color === '#10b981') { p.color = '#0ea5e9'; migrated = true; } // Sky Blue
+        if (p.color === '#f59e0b') { p.color = '#7c3aed'; migrated = true; } // Violet
+        if (p.color === '#3b82f6') { p.color = '#4f46e5'; migrated = true; } // Indigo
+        if (p.color === '#ef4444') { p.color = '#db2777'; migrated = true; } // Pink
+      });
+      if (migrated) this.saveProducts(products);
     }
     if (!localStorage.getItem(this.KEYS.ORDERS)) {
       localStorage.setItem(this.KEYS.ORDERS, JSON.stringify([]));
