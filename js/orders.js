@@ -10,6 +10,7 @@ const Orders = {
     product: '',
     status: '',
     platform: '',
+    sort: 'newest'
   },
   editingId: null,
 
@@ -35,6 +36,10 @@ const Orders = {
           <select class="form-control" id="filter-platform" style="min-width:140px">
             <option value="">Tất cả nền tảng</option>
             ${platforms.map(p => `<option value="${p}" ${this.filters.platform === p ? 'selected' : ''}>${p}</option>`).join('')}
+          </select>
+          <select class="form-control" id="filter-sort" style="min-width:140px">
+            <option value="newest" ${this.filters.sort === 'newest' ? 'selected' : ''}>Mới nhất trước</option>
+            <option value="oldest" ${this.filters.sort === 'oldest' ? 'selected' : ''}>Cũ nhất trước</option>
           </select>
         </div>
         <div class="toolbar-right">
@@ -92,6 +97,20 @@ const Orders = {
     }
     if (this.filters.platform) {
       orders = orders.filter(o => o.platform === this.filters.platform);
+    }
+
+    if (this.filters.sort === 'oldest') {
+      orders.sort((a, b) => {
+        const da = Utils.parseVietnameseDate(a.date) || new Date(0);
+        const db = Utils.parseVietnameseDate(b.date) || new Date(0);
+        return da - db;
+      });
+    } else {
+      orders.sort((a, b) => {
+        const da = Utils.parseVietnameseDate(a.date) || new Date(0);
+        const db = Utils.parseVietnameseDate(b.date) || new Date(0);
+        return db - da;
+      });
     }
 
     return orders;
@@ -193,6 +212,13 @@ const Orders = {
         this.currentPage = 1;
         this._renderTable();
       }, 300));
+
+
+      document.getElementById('filter-sort')?.addEventListener('change', (e) => {
+        this.filters.sort = e.target.value;
+        this.currentPage = 1;
+        this._renderTable();
+      });
     }
 
     [filterProduct, filterStatus, filterPlatform].forEach(el => {
