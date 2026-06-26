@@ -366,6 +366,7 @@ const App = {
     const stats = DataManager.getStats();
     const ordersBadge = document.getElementById('badge-orders');
     const accBadge = document.getElementById('badge-accounts');
+    const renewalsBadge = document.getElementById('badge-renewals');
 
     if (ordersBadge) {
       ordersBadge.textContent = stats.totalOrders;
@@ -374,6 +375,32 @@ const App = {
     if (accBadge) {
       accBadge.textContent = stats.freeSlots;
       accBadge.style.display = stats.freeSlots > 0 ? '' : 'none';
+    }
+    if (renewalsBadge) {
+      // Calculate expiring orders (<= 7 days)
+      const orders = DataManager.getOrders();
+      const products = DataManager.getProducts();
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      let expiringCount = 0;
+
+      orders.forEach(o => {
+        if (!o.email || !o.orderDate || o.status !== 'Đã thanh toán') return;
+        const orderDate = Utils.parseVietnameseDate(o.orderDate);
+        if (!orderDate || isNaN(orderDate)) return;
+        const product = products.find(p => p.name === o.product);
+        const durationMonths = product ? (product.duration || 1) : 1;
+        const expDate = new Date(orderDate);
+        expDate.setMonth(expDate.getMonth() + durationMonths);
+        const diffTime = expDate - now;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays <= 7) {
+          expiringCount++;
+        }
+      });
+
+      renewalsBadge.textContent = expiringCount;
+      renewalsBadge.style.display = expiringCount > 0 ? '' : 'none';
     }
   },
 

@@ -46,6 +46,7 @@ const Renewals = {
                   <th>Ngày đặt</th>
                   <th>Ngày hết hạn</th>
                   <th>Trạng thái</th>
+                  <th style="text-align: center;">Thao tác</th>
                 </tr>
               </thead>
               <tbody id="renewals-tbody">
@@ -158,8 +159,13 @@ const Renewals = {
           <td>${Utils.escapeHtml(o.madon)}</td>
           <td><span class="badge" style="${productObj ? `border:1px solid ${productObj.color}40; color:${productObj.color}; background:${productObj.color}15` : ''}">${Utils.escapeHtml(o.product)}</span></td>
           <td>${Utils.formatDateISO(o.orderDate)}</td>
-          <td><strong>${Utils.formatDateISO(o.expDate)}</strong></td>
+          <td>${Utils.formatDateISO(o.expDate)}</td>
           <td>${statusBadge}</td>
+          <td style="text-align: center;">
+            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px; background: rgba(59, 130, 246, 0.1); color: var(--accent-secondary); border-color: transparent;" onclick="Renewals.copyZaloMessage('${Utils.escapeHtml(o.email)}', '${Utils.escapeHtml(o.product)}', '${Utils.formatDateISO(o.expDate)}')">
+              💬 Gửi Zalo
+            </button>
+          </td>
         </tr>
       `;
     }).join('');
@@ -171,13 +177,28 @@ const Renewals = {
 
   toggleSelection(checkbox, productName) {
     if (checkbox.checked) {
-      // Store both email and product name so we can inject [Ten_Goi]
       this.selectedEmails.add(JSON.stringify({ email: checkbox.value, product: productName }));
     } else {
       this.selectedEmails.delete(JSON.stringify({ email: checkbox.value, product: productName }));
     }
     this._checkSelectAllState();
     this._updateBulkButton();
+  },
+
+  async copyZaloMessage(email, product, expDate) {
+    const template = `Xin chào anh/chị,\n\nGói dịch vụ [Ten_Goi] (Google AI Pro) của anh/chị trên email [Email] sẽ hết hạn vào ngày [Ngay_Het_Han].\n\nAnh/chị vui lòng gia hạn để không bị gián đoạn dịch vụ nhé. Cảm ơn anh/chị!`;
+    const message = template
+      .replace('\\[Ten_Goi\\]', product)
+      .replace('\\[Email\\]', email)
+      .replace('\\[Ngay_Het_Han\\]', expDate);
+    
+    try {
+      await navigator.clipboard.writeText(message);
+      Utils.showToast('Đã copy tin nhắn Zalo. Hãy dán (Ctrl+V) vào khung chat Zalo nhé!', 'success');
+      window.open('https://chat.zalo.me/', '_blank');
+    } catch (err) {
+      Utils.showToast('Lỗi copy, vui lòng thử lại', 'error');
+    }
   },
 
   toggleSelectAll(selectAllCheckbox) {
