@@ -439,7 +439,7 @@ const App = {
       Utils.showToast('Đã cập nhật sản phẩm', 'success');
     } else {
       // Add mode
-      const colors = ['#4f46e5', '#7c3aed', '#db2777', '#0ea5e9', '#059669', '#d946ef', '#06b6d4'];
+      const colors = ['#8b5cf6', '#ec4899', '#4f46e5', '#f97316', '#14b8a6', '#d946ef', '#7c3aed'];
       const id = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
       products.push({
         id,
