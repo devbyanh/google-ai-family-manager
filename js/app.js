@@ -197,10 +197,12 @@ const App = {
           
           <div class="form-group">
             <label class="form-label">URL Google Apps Script Web App</label>
-            <div style="display:flex;gap:8px">
-              <input type="text" class="form-control" id="f-sheets-url" value="${Utils.escapeHtml(sheetsUrl)}" placeholder="https://script.google.com/macros/s/.../exec" style="flex:1">
-              <button class="btn btn-primary" onclick="App.saveSheetUrl()">💾 Lưu</button>
-              <button class="btn btn-secondary" onclick="App.testSheetConnection()">🔌 Test</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <input type="text" class="form-control" id="f-sheets-url" value="${Utils.escapeHtml(sheetsUrl)}" placeholder="https://script.google.com/macros/s/.../exec" style="flex:1;min-width:250px">
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-primary" onclick="App.saveSheetUrl()">💾 Lưu</button>
+                <button class="btn btn-secondary" onclick="App.testSheetConnection()">🔌 Test</button>
+              </div>
             </div>
             <div class="form-hint">Xem file <strong>google-apps-script.js</strong> trong thư mục dự án để lấy hướng dẫn deploy</div>
           </div>
