@@ -318,7 +318,7 @@ const Orders = {
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Gán vào Acc mẹ</label>
+          <label class="form-label">Gán vào Tài khoản Quản lý</label>
           <select class="form-control" id="f-acc">
             <option value="">— Chưa gán —</option>
             ${accountOptions.map(a => {
@@ -376,7 +376,7 @@ const Orders = {
       const currentSlots = DataManager.getAccountSlotCount(data.accId);
       const isReassign = this.editingId && DataManager.getOrders().find(o => o._id === this.editingId)?.accId === data.accId;
       if (!isReassign && currentSlots >= 5) {
-        Utils.showToast('Acc mẹ này đã đầy (5/5 slot)', 'error');
+        Utils.showToast('Tài khoản Quản lý này đã đầy (5/5 slot)', 'error');
         return;
       }
     }

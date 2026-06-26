@@ -42,7 +42,7 @@ const Dashboard = {
         <div class="stat-card">
           <div class="stat-header">
             <div>
-              <div class="stat-label">Tổng acc mẹ</div>
+              <div class="stat-label">Tổng TK Quản lý</div>
               <div class="stat-value">${stats.totalAccounts}</div>
               <div class="stat-change ${stats.freeSlots > 0 ? 'positive' : 'negative'}">${stats.freeSlots > 0 ? '🟢' : '🔴'} ${stats.freeSlots} slot trống</div>
             </div>

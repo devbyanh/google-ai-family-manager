@@ -12,7 +12,7 @@ const Accounts = {
       <!-- Toolbar -->
       <div class="toolbar">
         <div class="toolbar-left">
-          <input type="text" class="form-control search-input" placeholder="🔍 Tìm theo email acc mẹ..." id="acc-search">
+          <input type="text" class="form-control search-input" placeholder="🔍 Tìm theo email TK Quản lý..." id="acc-search">
           <select class="form-control" id="filter-slot" style="min-width:140px">
             <option value="">Tất cả trạng thái</option>
             <option value="available">Còn slot trống</option>
@@ -21,7 +21,7 @@ const Accounts = {
         </div>
         <div class="toolbar-right">
           <button class="btn btn-secondary" onclick="Accounts.toggleView()" id="btn-toggle-view">📋 Xem bảng</button>
-          <button class="btn btn-primary" onclick="Accounts.openModal()">➕ Thêm acc mẹ</button>
+          <button class="btn btn-primary" onclick="Accounts.openModal()">➕ Thêm TK Quản lý</button>
         </div>
       </div>
 
@@ -74,8 +74,8 @@ const Accounts = {
       container.innerHTML = `
         <div class="empty-state">
           <div class="empty-icon">👤</div>
-          <div class="empty-title">Chưa có acc mẹ nào</div>
-          <div class="empty-desc">Nhấn "Thêm acc mẹ" để tạo tài khoản mẹ mới</div>
+          <div class="empty-title">Chưa có Tài khoản Quản lý nào</div>
+          <div class="empty-desc">Nhấn "Thêm TK Quản lý" để tạo tài khoản mới</div>
         </div>
       `;
       return;
@@ -185,7 +185,7 @@ const Accounts = {
                     </tr>
                   `;
                 }).join('') : `
-                  <tr><td colspan="6" class="text-center text-muted" style="padding:50px">Chưa có acc mẹ nào</td></tr>
+                  <tr><td colspan="6" class="text-center text-muted" style="padding:50px">Chưa có Tài khoản Quản lý nào</td></tr>
                 `}
               </tbody>
             </table>
@@ -239,7 +239,7 @@ const Accounts = {
 
     const modal = document.getElementById('account-modal');
     const title = document.getElementById('account-modal-title');
-    title.textContent = id ? 'Sửa acc mẹ' : 'Thêm acc mẹ mới';
+    title.textContent = id ? 'Sửa TK Quản lý' : 'Thêm TK Quản lý mới';
 
     document.getElementById('account-form').innerHTML = `
       <div class="form-row">
@@ -249,7 +249,7 @@ const Accounts = {
           <div class="form-hint">Để trống sẽ tự động tăng</div>
         </div>
         <div class="form-group">
-          <label class="form-label">Email acc mẹ</label>
+          <label class="form-label">Email TK Quản lý</label>
           <input type="email" class="form-control" id="f-acc-email" value="${Utils.escapeHtml(account.email)}" placeholder="email@gmail.com" required>
         </div>
       </div>
@@ -287,16 +287,16 @@ const Accounts = {
     if (accNum) data.accNumber = Number(accNum);
 
     if (!data.email) {
-      Utils.showToast('Vui lòng nhập email acc mẹ', 'error');
+      Utils.showToast('Vui lòng nhập email TK Quản lý', 'error');
       return;
     }
 
     if (this.editingId) {
       DataManager.updateAccount(this.editingId, data);
-      Utils.showToast('Đã cập nhật acc mẹ', 'success');
+      Utils.showToast('Đã cập nhật TK Quản lý', 'success');
     } else {
       DataManager.addAccount(data);
-      Utils.showToast('Đã thêm acc mẹ mới', 'success');
+      Utils.showToast('Đã thêm TK Quản lý mới', 'success');
     }
 
     this.closeModal();
@@ -308,19 +308,19 @@ const Accounts = {
     const members = DataManager.getOrdersByAccount(id);
     const msg = members.length > 0
       ? `Acc này đang có ${members.length} thành viên. Xoá acc sẽ huỷ gán tất cả thành viên. Tiếp tục?`
-      : 'Bạn có chắc muốn xoá acc mẹ này?';
+      : 'Bạn có chắc muốn xoá TK Quản lý này?';
 
     const confirmed = await Utils.confirm(msg);
     if (!confirmed) return;
 
     DataManager.deleteAccount(id);
-    Utils.showToast('Đã xoá acc mẹ', 'success');
+    Utils.showToast('Đã xoá TK Quản lý', 'success');
     this._renderContent();
     App.updateBadges();
   },
 
   async removeMember(orderId) {
-    const confirmed = await Utils.confirm('Gỡ thành viên này khỏi acc mẹ?');
+    const confirmed = await Utils.confirm('Gỡ thành viên này khỏi TK Quản lý?');
     if (!confirmed) return;
 
     DataManager.updateOrder(orderId, { accId: '', accNumber: '' });

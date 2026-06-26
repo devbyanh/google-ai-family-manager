@@ -53,7 +53,7 @@ const App = {
     const titles = {
       dashboard: '📊 Tổng quan',
       orders: '📋 Quản lý đơn hàng',
-      accounts: '👤 Quản lý Acc mẹ',
+      accounts: '👤 Tài khoản Quản lý',
       renewals: '⏳ Quản lý gia hạn',
       settings: '⚙️ Cài đặt',
     };
@@ -313,7 +313,7 @@ const App = {
           <div class="card-title">📥 Import dữ liệu từ CSV</div>
         </div>
         <div class="card-body">
-          <p class="text-muted mb-4" style="font-size:12px">Import dữ liệu từ Google Sheet (xuất dạng CSV). Hỗ trợ import đơn hàng và acc mẹ.</p>
+          <p class="text-muted mb-4" style="font-size:12px">Import dữ liệu từ Google Sheet (xuất dạng CSV). Hỗ trợ import đơn hàng và Tài khoản Quản lý.</p>
 
           <div class="form-row mb-4">
             <div>
@@ -326,10 +326,10 @@ const App = {
               <input type="file" id="import-orders-file" accept=".csv" style="display:none" onchange="App.importOrdersCSV(event)">
             </div>
             <div>
-              <div class="settings-title">👤 Import acc mẹ</div>
+              <div class="settings-title">👤 Import Tài khoản Quản lý</div>
               <div class="import-area" onclick="document.getElementById('import-accounts-file').click()">
                 <div class="import-icon">📄</div>
-                <div class="import-text">Click để chọn file CSV acc mẹ</div>
+                <div class="import-text">Click để chọn file CSV Tài khoản Quản lý</div>
                 <div class="import-hint">Headers: Acc, Mail, Gói, Ghi chú</div>
               </div>
               <input type="file" id="import-accounts-file" accept=".csv" style="display:none" onchange="App.importAccountsCSV(event)">
@@ -552,7 +552,7 @@ const App = {
       const text = await Utils.readFile(file);
       const rows = Utils.parseCSV(text);
       const count = DataManager.importAccountsFromCSV(rows);
-      Utils.showToast(`Đã import ${count} acc mẹ mới`, 'success');
+      Utils.showToast(`Đã import ${count} TK Quản lý mới`, 'success');
       this.updateBadges();
       // Sync imported data to Google Sheet
       if (SheetsAPI.isConnected() && count > 0) {
