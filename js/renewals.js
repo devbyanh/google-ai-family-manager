@@ -251,41 +251,74 @@ const Renewals = {
       let bodyText = template.replace(/\[Ten_Goi\]/g, data.product);
       
       let htmlWrapper = `
-      <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-        <h2 style="color: #2563eb; text-align: center;">Thông báo hết hạn gói</h2>
-        <p style="color: #333;">Chào Anh/Chị,</p>
-        <p style="color: #333;">Gói dịch vụ <b>Google AI Pro ${data.product}</b> của Anh/Chị <b style="color: #ef4444;">Đã hết hạn</b>.</p>
-        
-        <div style="background-color: #f8f9fa; border: 1px solid #e9ecef; padding: 15px; border-radius: 6px; margin: 20px 0;">
-          <p style="margin: 0 0 10px 0; font-size: 15px; color: #333; font-weight: bold;">&#10024; Quyền lợi khi gia hạn:</p>
-          <ul style="color: #333; margin: 0; padding-left: 0; line-height: 1.6; font-size: 14px; list-style-type: none;">
-            <li>&#128142; 5TB lưu trữ</li>
-            <li>&#128640; Gemini 3 Pro + Veo 3</li>
-            <li>&#129504; NotebookLM</li>
-            <li>&#9889; Google Antigravity</li>
-            <li>&#127916; Flow</li>
-            <li>&#128222; Google Meet không giới hạn</li>
-            <li>&#129689; 1.000 tín dụng AI VEO 3 mỗi tháng</li>
-          </ul>
-        </div>
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; padding: 40px 20px; font-family: Arial, sans-serif;">
+        <tr>
+          <td align="center">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 500px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,.08); overflow: hidden; border: 1px solid #e2e8f0;">
+              
+              <!-- Header -->
+              <tr>
+                <td align="center" style="padding: 30px 20px 20px 20px; border-bottom: 1px solid #f1f5f9;">
+                  <div style="font-size: 40px; margin-bottom: 10px;">&#129302;</div>
+                  <h2 style="margin: 0; color: #2563eb; font-size: 22px;">Google AI Pro</h2>
+                </td>
+              </tr>
 
-        <!-- Warning Box -->
-        <div style="margin: 25px 0; border-left: 4px solid #ef4444; background-color: #fef2f2; padding: 15px 20px; border-radius: 0 8px 8px 0;">
-          <h3 style="margin: 0 0 5px 0; font-size: 15px; color: #b91c1c;">&#9888;&#65039; Lưu ý quan trọng</h3>
-          <p style="margin: 0; font-size: 14px; color: #991b1b;">Nếu thay đổi nhóm gia đình sẽ bị cấm tham gia lại 12 tháng.</p>
-        </div>
+              <!-- Content -->
+              <tr>
+                <td style="padding: 25px 30px;">
+                  <p style="color: #334155; font-size: 16px; margin-top: 0;">Chào Anh/Chị,</p>
+                  
+                  <!-- Expiration Badge -->
+                  <div style="background:#fef2f2; border:1px solid #fecaca; padding:15px; border-radius:8px; margin:20px 0; text-align:center;">
+                    <div style="font-size:18px; font-weight:bold; color:#dc2626;">&#10060; Gói của bạn đã hết hạn</div>
+                    <div style="margin-top:8px; color:#444; font-size: 15px;">Google AI Pro ${data.product}</div>
+                  </div>
 
-        <!-- Action Buttons -->
-        <div style="text-align: center; margin-top: 35px; margin-bottom: 10px;">
-          <a href="https://zalo.me/0559629469" style="display: inline-block; background-color: #0068ff; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-weight: 600; font-size: 15px; margin: 0 5px 10px 5px; min-width: 160px; box-shadow: 0 4px 6px rgba(0, 104, 255, 0.2);">&#128172; Zalo: 0559629469</a>
-          <a href="https://t.me/tuawn_anh" style="display: inline-block; background-color: #2481cc; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-weight: 600; font-size: 15px; margin: 0 5px 10px 5px; min-width: 160px; box-shadow: 0 4px 6px rgba(36, 129, 204, 0.2);">&#9992;&#65039; Telegram Hỗ Trợ</a>
-        </div>
-        
-        <p style="color: #777; font-size: 12px; border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px; text-align: center;">
-          &copy; 2026 Khotaikhoan. Tất cả các quyền được bảo lưu.<br>
-          Email tự động, vui lòng không trả lời thư này.
-        </p>
-      </div>
+                  <!-- Features -->
+                  <div style="background-color: #f8f9fa; border: 1px solid #e9ecef; padding: 20px; border-radius: 8px; margin: 25px 0;">
+                    <p style="margin: 0 0 15px 0; font-size: 15px; color: #1e293b; font-weight: bold;">&#10024; Quyền lợi khi gia hạn:</p>
+                    <ul style="color: #334155; margin: 0; padding-left: 0; line-height: 1.9; font-size: 14px; list-style-type: none;">
+                      <li>&#128142; 5TB lưu trữ</li>
+                      <li>&#128640; Gemini 3 Pro + Veo 3</li>
+                      <li>&#129504; NotebookLM</li>
+                      <li>&#9889; Google Antigravity</li>
+                      <li>&#127916; Flow</li>
+                      <li>&#128222; Google Meet không giới hạn</li>
+                      <li>&#129689; 1.000 tín dụng AI VEO 3 mỗi tháng</li>
+                    </ul>
+                  </div>
+
+                  <!-- Warning Box -->
+                  <div style="margin: 25px 0; border-left: 4px solid #ef4444; background-color: #fef2f2; padding: 15px 20px; border-radius: 0 8px 8px 0;">
+                    <h3 style="margin: 0 0 5px 0; font-size: 15px; color: #b91c1c;">&#9888;&#65039; Lưu ý quan trọng</h3>
+                    <p style="margin: 0; font-size: 14px; color: #991b1b; line-height: 1.5;">Nếu thay đổi nhóm gia đình sẽ bị cấm tham gia lại 12 tháng.</p>
+                  </div>
+
+                  <!-- CTA -->
+                  <div style="text-align: center; margin-top: 35px; margin-bottom: 10px;">
+                    <p style="color: #16a34a; font-weight: bold; font-size: 15px; margin-bottom: 15px;">&#9889; Liên hệ ngay để được gia hạn trong vài phút.</p>
+                    
+                    <a href="https://zalo.me/0559629469" style="display: block; background-color: #0068ff; color: #ffffff; text-decoration: none; padding: 16px 20px; border-radius: 8px; font-weight: bold; font-size: 16px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0, 104, 255, 0.2);">&#128640; Gia hạn ngay qua Zalo</a>
+                    
+                    <a href="https://t.me/tuawn_anh" style="display: inline-block; color: #64748b; text-decoration: underline; font-size: 14px; font-weight: 500;">Hoặc hỗ trợ qua Telegram</a>
+                  </div>
+
+                </td>
+              </tr>
+
+              <!-- Footer -->
+              <tr>
+                <td align="center" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 20px;">
+                  <p style="margin: 0 0 10px 0; font-size: 14px; color: #ef4444; font-weight: bold;">Cảm ơn Anh/Chị đã tin tưởng sử dụng dịch vụ &#10084;&#65039;</p>
+                  <p style="margin: 0 0 5px 0; font-size: 12px; color: #94a3b8;">&copy; 2026 Khotaikhoan. Tất cả các quyền được bảo lưu.</p>
+                  <p style="margin: 0; font-size: 12px; color: #94a3b8;">Email tự động, vui lòng không trả lời thư này.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
       `;
       
       emailsPayload.push({
