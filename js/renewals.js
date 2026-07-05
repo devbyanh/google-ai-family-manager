@@ -253,16 +253,29 @@ const Renewals = {
       let htmlWrapper = `
       <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
         <h2 style="color: #2563eb; text-align: center;">Thông báo hết hạn gói</h2>
-        <p style="color: #333;">Chào bạn,</p>
-        <p style="color: #333;">Gói <b>${data.product}</b> của bạn đã hết hạn. Vui lòng gia hạn để tiếp tục sử dụng dịch vụ.</p>
+        <p style="color: #333;">Chào Anh/Chị,</p>
+        <p style="color: #333;">Gói dịch vụ <b>Google AI Pro ${data.product}</b> của Anh/Chị <b style="color: #ef4444;">Đã hết hạn</b>.</p>
         
-        <p style="color: #ef4444; font-weight: bold; margin-bottom: 5px;">⚠️ Lưu ý:</p>
+        <div style="background-color: #f8f9fa; border: 1px solid #e9ecef; padding: 15px; border-radius: 6px; margin: 20px 0;">
+          <p style="margin: 0 0 10px 0; font-size: 15px; color: #333; font-weight: bold;">&#10024; Quyền lợi khi gia hạn:</p>
+          <ul style="color: #333; margin: 0; padding-left: 20px; line-height: 1.6; font-size: 14px;">
+            <li>Gemini Pro</li>
+            <li>NotebookLM</li>
+            <li>Veo</li>
+            <li>Antigravity</li>
+            <li>5TB Storage</li>
+          </ul>
+        </div>
+
+        <p style="color: #ef4444; font-weight: bold; margin-bottom: 5px;">&#9888;&#65039; Lưu ý:</p>
         <ul style="color: #ef4444; margin-top: 0; padding-left: 20px; line-height: 1.5; font-size: 14px;">
           <li>Nếu thay đổi nhóm gia đình sẽ bị cấm tham gia lại 12 tháng.</li>
         </ul>
         
-        <div style="text-align: center; margin-top: 25px; margin-bottom: 10px;">
-            <a href="https://zalo.me/0559629469" style="display: inline-block; background-color: #0068ff; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 15px;">💬 Liên hệ Zalo Hỗ Trợ</a>
+        <div style="text-align: center; margin-top: 25px; margin-bottom: 15px;">
+            <a href="https://zalo.me/0559629469" style="display: inline-block; background-color: #0068ff; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; margin-bottom: 10px; width: 220px;">&#128172; Zalo: 0559629469</a>
+            <br>
+            <a href="https://t.me/tuawn_anh" style="display: inline-block; background-color: #2481cc; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; width: 220px;">&#9992;&#65039; Telegram: @tuawn_anh</a>
         </div>
         
         <p style="color: #777; font-size: 12px; border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px; text-align: center;">
