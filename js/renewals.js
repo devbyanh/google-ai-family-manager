@@ -236,8 +236,9 @@ const Renewals = {
   getExpireDate(orderDate, product) {
     if (!orderDate) return new Date().toLocaleDateString('vi-VN');
     
-    const expire = new Date(orderDate);
-    if (isNaN(expire.getTime())) return new Date().toLocaleDateString('vi-VN');
+    // Use Utils.parseVietnameseDate to correctly handle DD/MM/YYYY string formats from Google Sheets
+    const expire = Utils.parseVietnameseDate(orderDate);
+    if (!expire || isNaN(expire.getTime())) return new Date().toLocaleDateString('vi-VN');
 
     const map = {
       '7 Ngày': { days: 7 },
@@ -261,7 +262,7 @@ const Renewals = {
       }
     }
 
-    return expire.toLocaleDateString('vi-VN');
+    return Utils.formatDate(expire.toISOString()); // Guarantees DD/MM/YYYY
   },
 
   async sendBulkEmails() {
