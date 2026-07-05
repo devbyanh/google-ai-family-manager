@@ -147,13 +147,15 @@ const Renewals = {
         statusBadge = `<span class="badge badge-warning">Còn ${o.diffDays} ngày</span>`;
       }
 
-      const isChecked = this.selectedEmails.has(o.email);
+      const isChecked = Array.from(this.selectedEmails).some(jsonStr => {
+        try { return JSON.parse(jsonStr).email === o.email; } catch(e) { return false; }
+      });
       const productObj = DataManager.getProducts().find(p => p.name === o.product);
 
       return `
         <tr>
           <td style="text-align: center;">
-            <input type="checkbox" class="renewal-checkbox" value="${Utils.escapeHtml(o.email)}" ${isChecked ? 'checked' : ''} onchange="Renewals.toggleSelection(this, '${Utils.escapeHtml(o.product)}')">
+            <input type="checkbox" class="renewal-checkbox" value="${Utils.escapeHtml(o.email)}" data-product="${Utils.escapeHtml(o.product)}" data-orderdate="${Utils.escapeHtml(o.orderDate || '')}" ${isChecked ? 'checked' : ''} onchange="Renewals.toggleSelection(this)">
           </td>
           <td><strong>${Utils.escapeHtml(o.email)}</strong></td>
           <td>${Utils.escapeHtml(o.madon)}</td>
@@ -175,11 +177,12 @@ const Renewals = {
     this._updateBulkButton();
   },
 
-  toggleSelection(checkbox, productName) {
+  toggleSelection(checkbox) {
+    const payload = JSON.stringify({ email: checkbox.value, product: checkbox.dataset.product, orderDate: checkbox.dataset.orderdate });
     if (checkbox.checked) {
-      this.selectedEmails.add(JSON.stringify({ email: checkbox.value, product: productName }));
+      this.selectedEmails.add(payload);
     } else {
-      this.selectedEmails.delete(JSON.stringify({ email: checkbox.value, product: productName }));
+      this.selectedEmails.delete(payload);
     }
     this._checkSelectAllState();
     this._updateBulkButton();
@@ -205,11 +208,11 @@ const Renewals = {
     const checkboxes = document.querySelectorAll('.renewal-checkbox');
     checkboxes.forEach(cb => {
       cb.checked = selectAllCheckbox.checked;
-      const productName = cb.closest('tr').querySelector('.badge-blue').textContent;
+      const payload = JSON.stringify({ email: cb.value, product: cb.dataset.product, orderDate: cb.dataset.orderdate });
       if (cb.checked) {
-        this.selectedEmails.add(JSON.stringify({ email: cb.value, product: productName }));
+        this.selectedEmails.add(payload);
       } else {
-        this.selectedEmails.delete(JSON.stringify({ email: cb.value, product: productName }));
+        this.selectedEmails.delete(payload);
       }
     });
     this._updateBulkButton();
@@ -230,6 +233,37 @@ const Renewals = {
     }
   },
 
+  getExpireDate(orderDate, product) {
+    if (!orderDate) return new Date().toLocaleDateString('vi-VN');
+    
+    const expire = new Date(orderDate);
+    if (isNaN(expire.getTime())) return new Date().toLocaleDateString('vi-VN');
+
+    const map = {
+      '7 Ngày': { days: 7 },
+      '15 Ngày': { days: 15 },
+      '30 Ngày': { days: 30 },
+      '1 Tháng': { months: 1 },
+      '3 Tháng': { months: 3 },
+      '6 Tháng': { months: 6 },
+      '12 Tháng': { months: 12 },
+      '1 Năm': { years: 1 },
+      '2 Năm': { years: 2 }
+    };
+
+    for (const key in map) {
+      if (product.includes(key)) {
+        const t = map[key];
+        if (t.days) expire.setDate(expire.getDate() + t.days);
+        if (t.months) expire.setMonth(expire.getMonth() + t.months);
+        if (t.years) expire.setFullYear(expire.getFullYear() + t.years);
+        break;
+      }
+    }
+
+    return expire.toLocaleDateString('vi-VN');
+  },
+
   async sendBulkEmails() {
     if (this.selectedEmails.size === 0) return;
     if (!SheetsAPI.isConnected()) {
@@ -246,6 +280,7 @@ const Renewals = {
 
     this.selectedEmails.forEach(jsonStr => {
       const data = JSON.parse(jsonStr);
+      const expireDate = this.getExpireDate(data.orderDate, data.product);
       
       // Fallback plain text email
       let bodyText = template.replace(/\[Ten_Goi\]/g, data.product);
@@ -275,7 +310,7 @@ const Renewals = {
                       <td align="center" style="padding: 15px;">
                         <div style="font-size: 18px; font-weight: bold; color: #dc2626;">&#10060; Gói của bạn đã hết hạn</div>
                         <div style="margin-top: 8px; color: #444; font-size: 15px;">Google AI Pro ${data.product}</div>
-                        <div style="margin-top: 4px; color: #666; font-size: 14px;">Ngày hết hạn: ${new Date().toLocaleDateString('vi-VN')}</div>
+                        <div style="margin-top: 4px; color: #666; font-size: 14px;">Ngày hết hạn: ${expireDate}</div>
                       </td>
                     </tr>
                   </table>
