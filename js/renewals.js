@@ -296,7 +296,6 @@ const Renewals = {
               <tr>
                 <td align="center" style="padding: 30px 20px 20px 20px; border-bottom: 1px solid #f1f5f9;">
                   <h2 style="margin: 0; color: #2563eb; font-size: 24px; font-weight: bold;">Google AI Pro</h2>
-                  <p style="margin: 5px 0 0 0; font-size: 14px; color: #64748b;">Powered by Khotaikhoan</p>
                 </td>
               </tr>
 
@@ -366,7 +365,7 @@ const Renewals = {
                 <td align="center" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 20px;">
                   <p style="margin: 0 0 10px 0; font-size: 14px; color: #ef4444; font-weight: bold;">Cảm ơn Anh/Chị đã tin tưởng sử dụng dịch vụ &#10084;&#65039;</p>
                   <p style="margin: 0 0 10px 0; font-size: 13px; color: #64748b;">Nếu Anh/Chị đã gia hạn gần đây, vui lòng bỏ qua email này.</p>
-                  <p style="margin: 0 0 5px 0; font-size: 12px; color: #94a3b8;">&copy; 2026 Khotaikhoan. Tất cả các quyền được bảo lưu.</p>
+                  <p style="margin: 0 0 5px 0; font-size: 12px; color: #94a3b8;">&copy; 2026 Google AI Pro. Tất cả các quyền được bảo lưu.</p>
                   <p style="margin: 0; font-size: 12px; color: #94a3b8;">Email tự động, vui lòng không trả lời thư này.</p>
                 </td>
               </tr>
